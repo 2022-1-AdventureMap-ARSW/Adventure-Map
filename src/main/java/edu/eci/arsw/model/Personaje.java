@@ -7,9 +7,9 @@ public abstract class Personaje{
 
     private Tuple coordenadas;
     private int vida;
-    private int daño;
-    public int VIDA = 100;
-    public int DAÑO = 10;
+    private int dano;
+    public static int VIDA = 100;
+    public static int DANO = 10;
 
     public Personaje(Tuple coordenada){
         this.coordenadas = coordenada;

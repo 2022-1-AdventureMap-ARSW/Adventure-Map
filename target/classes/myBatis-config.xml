@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <propierties resource = "config.propierties">
+    </propierties>
+    <typeAliases>
+        <typeAlias type="edu.eci.arsw.model.Monstruo" alias="Monstruo"/>
+        <typeAlias tpe="edu.eci.arsw.model.Jugador" alias="Jugador"/>
+        <typeAlias type="edu.eci.arsw.model.Personaje" alias="Personaje"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mappers/PersonajeMapper.xml"></mapper>
+        <mapper resource="mappers/JugadorMapper.xml"></mapper>
+        <mapper resource="mappers/MonstruoMapper.xml"></mapper>
+    </mappers>
+</configuration>
