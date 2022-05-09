@@ -9,15 +9,11 @@ import edu.escuelaing.arsw.services.persistence.AdventureMapServicesPersistenceE
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Service
@@ -134,5 +130,12 @@ public class appAPIController {
                 e.printStackTrace();
             }
         return mensaje;
+    }
+
+    @GetMapping("Admin")
+    @ResponseBody
+    @PreAuthorize("hasAuthority('APPROLE_Admin')")
+    public String Admin() {
+        return "Admin message";
     }
 }
