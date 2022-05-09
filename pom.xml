@@ -23,7 +23,8 @@
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-web</artifactId> 
-    </dependency>  
+    </dependency>
+
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-websocket</artifactId> 
@@ -32,7 +33,19 @@
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-test</artifactId>  
       <scope>test</scope> 
-    </dependency>  
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-client</artifactId>
+      <version>5.6.3</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-spring-boot-starter -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+      <version>3.0.0</version>
+    </dependency>
     <dependency> 
       <groupId>org.webjars</groupId>  
       <artifactId>webjars-locator</artifactId> 
@@ -60,10 +73,10 @@
   </dependencies>  
   <build> 
     <plugins> 
-      <plugin> 
-        <groupId>org.springframework.boot</groupId>  
-        <artifactId>spring-boot-maven-plugin</artifactId> 
-      </plugin>  
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-compiler-plugin</artifactId>  
@@ -87,33 +100,33 @@
           </execution> 
         </executions> 
       </plugin>  
-      <plugin> 
-        <groupId>com.microsoft.azure</groupId>  
-        <artifactId>azure-webapp-maven-plugin</artifactId>  
-        <version>1.10.0</version>  
-        <configuration> 
-          <schemaVersion>V2</schemaVersion>  
-          <resourceGroup>AdventureMap</resourceGroup>  
-          <appName>AdventureMap-app</appName>  
-          <pricingTier>F1</pricingTier>  
-          <region>eastus</region>  
-          <runtime> 
-            <os>linux</os>  
-            <javaVersion>jre8</javaVersion>  
-            <webContainer>jre8</webContainer> 
-          </runtime>  
-          <deployment> 
-            <resources> 
-              <resource> 
-                <directory>${project.basedir}/target</directory>  
-                <includes> 
-                  <include>*.jar</include> 
-                </includes> 
-              </resource> 
-            </resources> 
-          </deployment> 
-        </configuration> 
-      </plugin> 
+      <plugin>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-webapp-maven-plugin</artifactId>
+        <version>1.10.0</version>
+        <configuration>
+          <schemaVersion>V2</schemaVersion>
+          <resourceGroup>AdventureMap</resourceGroup>
+          <appName>AdventureMap-app</appName>
+          <pricingTier>F1</pricingTier>
+          <region>eastus</region>
+          <runtime>
+            <os>linux</os>
+            <javaVersion>jre8</javaVersion>
+            <webContainer>jre8</webContainer>
+          </runtime>
+          <deployment>
+            <resources>
+              <resource>
+                <directory>${project.basedir}/target</directory>
+                <includes>
+                  <include>*.jar</include>
+                </includes>
+              </resource>
+            </resources>
+          </deployment>
+        </configuration>
+      </plugin>
     </plugins> 
   </build> 
 </project>
