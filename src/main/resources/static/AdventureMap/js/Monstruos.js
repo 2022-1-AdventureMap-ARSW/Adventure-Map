@@ -24,29 +24,36 @@ function getMonstruos(){
   });
   if(count%4===0){
     count+=1;
-    monstruos.forEach(element => {
-      move_monster(element,function(monster){
-        $.ajax({
-          url: url5+"AdventureMap/monstruos/"+monster.nombre,
-          type: "PUT",
-          data: JSON.stringify(monster),	
-          contentType: "application/json"
-      }).then(
-          function(){
-              console.log("Monstruo modificado");
-              console.log(monster);
-              // drawjugadoresPart(player.posicion);
-              stompClient.send('/App/jugadores/map',{},JSON.stringify(monster));
-          },
-          function(err){
-              console.log("No se pudo modificar el monstruo");
-              move_monster(element);
-          }
-      )
-      });
+    moverMonstruos(monstruos, function(){
+      stompClient.send('/App/jugadores/map',{},JSON.stringify(player));
     });
   }
   //console.log("COUNT"+count)
+}
+
+function moverMonstruos(monstruos, callback){
+  monstruos.forEach(element => {
+    move_monster(element,function(monster){
+      $.ajax({
+        url: url5+"AdventureMap/monstruos/"+monster.nombre,
+        type: "PUT",
+        data: JSON.stringify(monster),	
+        contentType: "application/json"
+    }).then(
+        function(){
+            console.log("Monstruo modificado");
+            console.log(monster);
+            // drawjugadoresPart(player.posicion);
+            stompClient.send('/App/jugadores/map',{},JSON.stringify(monster));
+        },
+        function(err){
+            console.log("No se pudo modificar el monstruo");
+            move_monster(element);
+        }
+    )
+    });
+  })
+  callback();
 }
 
 
