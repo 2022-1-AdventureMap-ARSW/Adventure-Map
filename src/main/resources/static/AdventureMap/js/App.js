@@ -157,7 +157,7 @@
                         intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                     }
                     actualizarEstadisticasJugadorMonstruo(local,enemigo);
-                }else if(enemigo.ataca == true && local.ataca == false && enemigo.vida > 0){
+                }else if(enemigo.ataca == true && local.ataca == false && enemigo.vida > 0 && local.vida > 0){
                     console.log("Pela más de dos");
                     alert("El enemigo esta en una pelea");
                     huirJugador();
