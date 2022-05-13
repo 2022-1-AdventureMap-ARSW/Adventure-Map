@@ -10,6 +10,7 @@ const msalConfig = {
         // Full directory URL, in the form of https://login.microsoftonline.com/<tenant>
         authority: "https://login.microsoftonline.com/common",
         // Full redirect URL, in form of http://localhost:3000
+        //redirectUri: "http://localhost:8080/AdventureMap/Index.html",
         redirectUri: "http://projectarsw.australiaeast.cloudapp.azure.com:8080/AdventureMap/Index.html",
     },
     cache: {
