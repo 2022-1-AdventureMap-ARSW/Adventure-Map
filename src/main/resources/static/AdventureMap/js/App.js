@@ -12,7 +12,7 @@
     var rol;
     let intervaloAtaqueMonstruo;
     const boton = document.querySelector("#botonAtaque");
-    const url5 = 'https://adventuremap.herokuapp.com/AdventureMap';
+    const url5 = 'https://adventuremap.herokuapp.com/';
 
     /**
      * Funcion generada para redireccionar desde la página inicial
