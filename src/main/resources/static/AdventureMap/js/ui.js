@@ -7,15 +7,13 @@ function showWelcomeMessage(username) {
     const profileButton = document.getElementById("entergame");
     const signInButton = document.getElementById("SignIn");
     // Reconfiguring DOM elements
-    profileButton.removeAttribute("hidden")
     signInButton.setAttribute("onclick", "signOut();");
     signInButton.setAttribute('class', "btn btn-success")
     signInButton.innerHTML = "Sign Out";
+    profileButton.removeAttribute("hidden")
 
 }
 
 function updateUI() {
     console.log('Game responded at: ' + new Date().toString());
-
-
 }
