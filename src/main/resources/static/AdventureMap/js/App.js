@@ -12,7 +12,7 @@
     var rol;
     let intervaloAtaqueMonstruo;
     const boton = document.querySelector("#botonAtaque");
-    //const url5 = 'http://adventuremap.herokuapp.com/AdventureMap';
+    const url5 = 'http://adventuremap.herokuapp.com/AdventureMap';
 
     /**
      * Funcion generada para redireccionar desde la página inicial
@@ -96,7 +96,7 @@
         console.log("ESTE ES EL JUGADOR"+name);
         var player = {"nombre":this.name, "posicion":getJugador()};
         $.ajax({
-            url: url3+"AdventureMap/jugadores/",
+            url: url5+"AdventureMap/jugadores/",
             type: "POST",
             data: JSON.stringify(player),	
             contentType: "application/json"
