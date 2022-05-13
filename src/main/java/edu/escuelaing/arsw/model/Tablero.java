@@ -52,8 +52,8 @@ public class Tablero {
                     throw new AdventureMapPersistenceException(AdventureMapPersistenceException.MAS_DE_DOS);
                 }
                 else{
-                    getPersonaje(end).setAtaca(true);
-                    getPersonaje(begin).setAtaca(true);
+                    // getPersonaje(end).setAtaca(true);
+                    // getPersonaje(begin).setAtaca(true);
                     System.out.println("PELEA NORMAL");
                     throw new AdventureMapPersistenceException(AdventureMapPersistenceException.ATACAR_EXCEPTION);
 
@@ -146,6 +146,8 @@ public class Tablero {
     public ConcurrentHashMap<String,Personaje> getTablero(){
         return this.tablero;
     }
+
+    
 
     
 

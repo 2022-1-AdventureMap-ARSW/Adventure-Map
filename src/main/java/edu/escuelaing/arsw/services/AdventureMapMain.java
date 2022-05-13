@@ -1,5 +1,8 @@
 package edu.escuelaing.arsw.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.escuelaing.arsw.model.Jugador;
 import edu.escuelaing.arsw.model.Personaje;
 import edu.escuelaing.arsw.model.Tuple;
@@ -11,7 +14,7 @@ public class AdventureMapMain {
     
     public static Personaje j1,j2,j3;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
         AdventureMapServices ams = new AdventureMapServices();
         try {
             j1 = new Jugador(new Tuple(12,78), "Jugador1", ams.getTablero());
@@ -25,7 +28,7 @@ public class AdventureMapMain {
             // ams.atacar(j1, j2.getCoordenadas());
             // j1.atacar(j2.getCoordenadas());
             // j3.atacar(j2.getCoordenadas());
-            ams.moverPersonaje(j1, j2.getCoordenadas());
+            //ams.moverPersonaje(j1, j2.getCoordenadas());
             // ams.moverPersonaje(j3, j2.getCoordenadas());
             // ams.moverPersonaje(j2, j3.getCoordenadas());
             // ams.moverPersonaje(j3, j1.getCoordenadas());
@@ -34,19 +37,10 @@ public class AdventureMapMain {
             // ams.atacar(j1,j2.getCoordenadas());
             // ams.atacar(j2,j1.getCoordenadas());
             // ams.atacar(j3,j1.getCoordenadas());
+            ObjectMapper mapper = new ObjectMapper();
+            String jugador = mapper.writeValueAsString(j2);
+            System.out.println(jugador);
 
-        } catch (AdventureMapServicesPersistenceException e) {
-            // System.out.println("Coordenadas J1" + j1.getCoordenadas());
-            // e.printStackTrace();
-            if(e.getMessage().equals(AdventureMapPersistenceException.ATACAR_EXCEPTION)){
-                System.out.println("Se entro en pe lea");
-                try {
-                    ams.moverPersonaje(j3, j2.getCoordenadas());
-                } catch (AdventureMapServicesPersistenceException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-            }
         } catch (AdventureMapPersistenceException e) {
             //TODO Auto-generated catch block
             e.printStackTrace();

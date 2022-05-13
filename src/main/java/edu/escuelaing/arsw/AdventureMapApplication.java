@@ -12,3 +12,4 @@ public class AdventureMapApplication {
         SpringApplication.run(AdventureMapApplication.class, args);
     }
 }
+

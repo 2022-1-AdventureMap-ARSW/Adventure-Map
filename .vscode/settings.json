@@ -1,5 +1,6 @@
 {
     "appService.preDeployTask": "package:AdventureMap",
     "appService.deploySubpath": "target\\AdventureMap-0.0.1-SNAPSHOT.jar",
-    "appService.defaultWebAppToDeploy": "/subscriptions/9dc61c56-91ff-488b-82ad-a9787cf248f0/resourceGroups/AdventureMap/providers/Microsoft.Web/sites/AdventureMap-app"
+    "appService.defaultWebAppToDeploy": "/subscriptions/9dc61c56-91ff-488b-82ad-a9787cf248f0/resourceGroups/AdventureMap/providers/Microsoft.Web/sites/AdventureMap-app",
+    "java.dependency.packagePresentation": "hierarchical"
 }

@@ -1,12 +1,17 @@
 package edu.escuelaing.arsw.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.json.JSONObject;
+
 import edu.escuelaing.arsw.persistence.AdventureMapPersistenceException;
 
 public class Jugador extends Personaje{
 
-    private String nombre;
-    private int bajaJugadores;
-    private int bajaMonstruos;
+    private int bajaJugadores = 0;
+    private int bajaMonstruos = 0;
 
 
     public Jugador(){
@@ -19,7 +24,23 @@ public class Jugador extends Personaje{
 
     @Override
     public String toString(){
-        return "Jugador{Nombre: "+nombre+", "+super.toString()+"}";
+        return "Jugador{"+super.toString()+"}";
+    }
+
+
+    public Map<String,Object> getJSON() {
+        Map<String,Object> jugador = new HashMap<String,Object>();
+        //Introduciendo atributos
+        jugador.put("nombre", this.nombre);
+        jugador.put("posicion", this.coordenadas);
+        jugador.put("vida",this.vida);
+        jugador.put("dano",this.dano);
+        jugador.put("bajaJugadores",this.bajaJugadores);
+        jugador.put("bajaMonstruos",this.bajaMonstruos);
+        jugador.put("ataca",this.ataca);
+        jugador.put("Tipo","Jugador");
+        return jugador;
+
     }
 
 
@@ -36,14 +57,6 @@ public class Jugador extends Personaje{
             case "Huir":
                 //Huir
         }
-    }
-
-    public String getNombre() {
-        return this.nombre;
-    }
-
-    public int getBajaJugadores() {
-        return this.bajaJugadores;
     }
 
     public int getBajaMonstruos() {
