@@ -21,6 +21,12 @@ h2{
     text-align: center;
     margin-top: 90px;
 }
+
+h1{
+    color: #fff;
+    text-align: left;
+    margin-top: 20px;
+}
 input[type="text"]{
     color:gray;
     text-align: center;
