@@ -1,14 +1,17 @@
 // Select DOM elements to work with
-const signInButton = document.getElementById("SignIn");
 const Playerid = document.getElementById("playerName");
-const profileButton = document.getElementById("entergame");
-const cardDiv = document.getElementById("card-div");
+
 
 function showWelcomeMessage(username) {
+// Select DOM elements to work with
+    const profileButton = document.getElementById("entergame");
+    const signInButton = document.getElementById("SignIn");
     // Reconfiguring DOM elements
+    profileButton.removeAttribute("hidden")
     signInButton.setAttribute("onclick", "signOut();");
     signInButton.setAttribute('class', "btn btn-success")
     signInButton.innerHTML = "Sign Out";
+
 }
 
 function updateUI() {
