@@ -31,7 +31,7 @@ function getJugadores(){
     }).then(function(){
         drawjugadoresPart(jugadores_);
     },function(err){
-        console.log("Jugadores no encontrados");
+        console.log("Jugadores no encontrados ");
     })
 }
 
