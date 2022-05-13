@@ -1,7 +1,13 @@
 package edu.escuelaing.arsw.model;
 
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import edu.escuelaing.arsw.persistence.AdventureMapNotFoundException;
 import edu.escuelaing.arsw.persistence.AdventureMapPersistenceException;
+import edu.escuelaing.arsw.services.persistence.AdventureMapServicesPersistenceException;
 
 /**
  * Clase que simula un personaje en el juego
@@ -13,6 +19,7 @@ public abstract class Personaje extends Thread{
     protected int dano;
     protected boolean vivo = true;
     protected Tablero tablero;
+    protected String nombre;
     public boolean ataca = false;
     public static int VIDA = 100;
     public static int DANO = 10;
@@ -22,6 +29,9 @@ public abstract class Personaje extends Thread{
         this.dano = DANO;
         this.vida = VIDA;
     }
+
+    abstract public Map<String,Object> getJSON();
+
 
     public Personaje(Tuple coordenada, Tablero tablero) throws AdventureMapPersistenceException{
         this.coordenadas = coordenada;
@@ -53,7 +63,7 @@ public abstract class Personaje extends Thread{
 
     @Override
     public String toString(){
-        return "Coordenadas:"+this.coordenadas+" vida:"+this.vida+" dano: "+this.dano;
+        return "Nombre: "+this.nombre+", Posicion:"+this.coordenadas+" vida:"+this.vida+" dano: "+this.dano;
     }
 
     /**
@@ -71,9 +81,15 @@ public abstract class Personaje extends Thread{
         Personaje p = tablero.getPersonaje(enemigo);
         try{
             System.out.println(this.coordenadas + " ataca a "+p);
+            setAtaca(true);
             p.sufrirAtaque(dano);
+        }catch(AdventureMapPersistenceException  ea){
+            if(ea.getMessage() == AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR){
+                setAtaca(false);
+            }
+            throw ea;
         }
-        catch(AdventureMapPersistenceException e){
+        catch(Exception e){
             throw e;
         }
 
@@ -86,8 +102,10 @@ public abstract class Personaje extends Thread{
      */
     public void sufrirAtaque(int dano) throws AdventureMapPersistenceException{
         this.vida -= dano;
+        setAtaca(true);
         System.out.println("Vida Restante de "+this.coordenadas +": " +this.vida);
         if(this.vida<=0){
+            System.out.println("-----------------------EL jugador ha muerto");
             this.vivo = false;
             throw new AdventureMapPersistenceException(AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR);
         }
@@ -136,6 +154,14 @@ public abstract class Personaje extends Thread{
 
     public boolean getVivo(){
         return this.vivo;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
 

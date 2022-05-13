@@ -3,6 +3,7 @@ package edu.escuelaing.arsw.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,7 +60,7 @@ public class AdventureMapServices {
                     y = Math.round((float)Math.random()*tTablero);
                     newPosicion = new Tuple(x, y);
                 }
-                    Monstruo m = new Monstruo(newPosicion, tablero);
+                    Monstruo m = new Monstruo(newPosicion, tablero, "Monstruo"+(i+1));
 
             }catch(AdventureMapPersistenceException e){
                 throw new AdventureMapServicesPersistenceException("No ha sido posible crear el monstruo en la posicion ("+x+","+y+")");
@@ -83,6 +84,16 @@ public class AdventureMapServices {
     public void atacar(Personaje atacante,Tuple victima) throws AdventureMapServicesPersistenceException{
         try{
             atacante.atacar(victima);
+        }catch(AdventureMapNotFoundException e){
+            throw new AdventureMapServicesPersistenceException("El enemigo no fue encontrado",e.getCause());
+        }catch(AdventureMapPersistenceException ex){
+            throw new AdventureMapServicesPersistenceException(ex.getMessage(),ex.getCause());
+        }
+    }
+
+    public void atacar(Personaje atacante, Personaje victima) throws AdventureMapServicesPersistenceException{
+        try{
+            atacante.atacar(victima.getCoordenadas());
         }catch(AdventureMapNotFoundException e){
             throw new AdventureMapServicesPersistenceException("El enemigo no fue encontrado",e.getCause());
         }catch(AdventureMapPersistenceException ex){
@@ -146,6 +157,32 @@ public class AdventureMapServices {
         }
     }
 
+    public ArrayList<Map<String,Object>> getPersonajesJson(String tipo){
+        reloadPersonajes();
+        ArrayList monstruos = new ArrayList<>();
+        ArrayList jugadores = new ArrayList<>();
+        for(Personaje p:personajes){
+            if(p instanceof Jugador){
+                Jugador j = (Jugador)p;
+                jugadores.add(p.getJSON());
+            }
+            else{
+                Monstruo m = (Monstruo)p;
+                monstruos.add(p.getJSON());
+            }
+        }
+        switch (tipo){
+            case "Monstruo":{
+                return monstruos;
+            }
+            case "Jugador" :{
+                return jugadores;
+            }
+            default:
+                return null;
+        }
+    }
+
     public ArrayList<Tuple> getMonstruos(){
         reloadPersonajes();
         System.out.println(this.monstruos);
@@ -164,6 +201,29 @@ public class AdventureMapServices {
     public void quitarPersonaje(Personaje p){
         personajes.remove(p);
     }
+
+    /**
+     * Retorna el jugador indicado
+     * @param nombre Nombre del jugador
+     * @return
+     * @throws AdventureMapServicesPersistenceException
+     */
+    public Jugador getJugador(String nombre) throws AdventureMapServicesPersistenceException{
+        Jugador jugador = null;
+        reloadPersonajes();
+        for(Personaje j:personajes){
+            if(j instanceof Jugador){
+                Jugador player = (Jugador)j;
+                if(player.getNombre().equals(nombre)){
+                    jugador = player;
+                }
+            }
+        }
+        if(jugador == null){
+            throw new AdventureMapServicesPersistenceException("El jugador Jugador "+nombre+"no existe!");
+        }
+        return jugador;
+    }
     
     public Personaje getPersonaje(Tuple personaje) throws AdventureMapServicesPersistenceException{
         Personaje p = null;
@@ -172,6 +232,20 @@ public class AdventureMapServices {
         } catch (AdventureMapNotFoundException | AdventureMapPersistenceException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+        return p;
+    }
+
+    public Personaje getPersonaje(String nombre) throws AdventureMapServicesPersistenceException{
+        Personaje p = null;
+        reloadPersonajes();
+        for(Personaje pe: personajes){
+            if(pe.getNombre().equals(nombre)){
+                p= pe;
+            }
+        }
+        if(p == null){
+            throw new AdventureMapServicesPersistenceException("El personaje "+nombre+"no existe!");
         }
         return p;
     }
@@ -188,18 +262,5 @@ public class AdventureMapServices {
         return q;
     }
 
-    /** 
-     * Retorna la posicion del jugador inidicado
-     * @param nombre Nombre del jugador a buscar
-     * @return
-     * @throws AdventureMapServicesPersistenceException
-     */
-    public Tuple getPersonaje(String nombre) throws AdventureMapServicesPersistenceException{
-        Tuple p = tablero.getPersonaje(nombre);
-        if(p == null){
-            throw new AdventureMapServicesPersistenceException("El jugador no existe");
-        }
-        return p;
-    }
 
 }

@@ -4,14 +4,15 @@
     var jugador1;
     var stompClient;
     var direction;
-    var enemigo = {x:0,y:0};
+    var contrincante = {}
     var subscribePelea;
     var count = 1;
     var h1;
     var h2;
     var rol;
+    let intervaloAtaqueMonstruo;
     const boton = document.querySelector("#botonAtaque");
-    //const url5 = 'http://adventuremap.herokuapp.com/AdventureMap';
+    const url5 = 'https://adventuremap.herokuapp.com/';
 
     /**
      * Funcion generada para redireccionar desde la página inicial
@@ -58,7 +59,7 @@
         // main();
         // mainM();
         // maint();
-        stompClient.send("/App/map/mover/"+h,{},JSON.stringify(getJugador()));
+        stompClient.send("/App/map/mover/"+name,{},JSON.stringify(getJugador()));
         count +=1;
 
     }
@@ -71,6 +72,7 @@
     function getElementsTablero(){
         clear_board()
         maint();
+        getMonstruos();
         getPlayerInCanva();
     }
 
@@ -92,7 +94,23 @@
     function getPlayerInCanva(){
         console.log(name)
         console.log("ESTE ES EL JUGADOR"+name);
-        stompClient.send("/App/map/"+name,{},JSON.stringify(getJugador()));
+        var player = {"nombre":this.name, "posicion":getJugador()};
+        $.ajax({
+            url: url4+"AdventureMap/jugadores/",
+            type: "POST",
+            data: JSON.stringify(player),	
+            contentType: "application/json"
+        }).then(
+            function(){
+                console.log("JugadorIngresado");
+                console.log(JSON.stringify(player.posicion));
+                // drawjugadoresPart(player.posicion);
+                stompClient.send('/App/jugadores/map',{},JSON.stringify(player));
+            },
+            function(err){
+                alert("No se pudo ingresar el jugador");
+            }
+        )
     }
 
 
@@ -107,73 +125,56 @@
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
-
         //SUSCRIBIRSE AL CANAL DE JUEGO
         stompClient.connect({},function(frame){
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/App/jugador/map', function(eventbody){
-                console.log("EVENTBODY DE /JUGADOR/MAP 1")
-                drawjugadoresPart(JSON.parse(eventbody.body));
-                console.log(JSON.parse(eventbody.body));
+            stompClient.subscribe('/App/jugadores/map', function(eventbody){
+                console.log("EVENTBODY DE /JUGADOR/MAP 1");
+                console.log("Se supone que imprimer los elementos del mapa");
+                drawPlayer();
             });
 
             //SUSCRIPCION AL CANAL DE PELEA
             // ESTE CANAL ACTUALIZA LAS ESTADISTICAS DE LOS JUGADORES
              subscribePelea = stompClient.subscribe("/App/pelea/", function(eventbody){
-                 var personaje = JSON.parse(eventbody.body);
-                 console.log("ESTE ES EL EVENTBODY1 " + eventbody);
-                 enemigo = personaje[1];
-                 document.getElementById("imagenJugador").src ="img/ATACANDO.jpg"
-
-                 //SI SOY ATACANTE
-                 if(getJugadorVie().x == personaje[0].x && getJugadorVie().y == personaje[0].y){
-                    h1 = "(" + personaje[0].x + ","+  personaje[0].y + ")";
-                    h2 = "(" + personaje[1].x + ","+  personaje[1].y + ")";
-                 }
-
-                 //SI SOY ENEMIGO
-                 else if(getJugador().x == personaje[1].x && getJugadorVie().y == personaje[1].y){
-                    h1 = "(" + personaje[1].x + ","+  personaje[1].y + ")";
-                    h2 = "(" + personaje[0].x + ","+  personaje[0].y + ")";
-                 }
-
-                 stompClient.send("/App/atacando",{},h1);
-                 stompClient.send("/App/atacando",{},h2);
-                 console.log("H1 ES "+h1)
-                 $.get(url2+"/AdventureMap/personajes/estadisticas/"+h1,function(data){
-                     $("#vidaP").text("vidaP: "+data.x);
-                     $("#ataqueP").text("ataqueP: "+" "+data.y);
-                 }).then(function(){
-                     console.log("Excelente");
-                 },
-                 function(err){
-                     alert("Usted ha muerto");
-                     huirJugador();
-                     window.location.href = "/AdventruMap/Index.html";
-                 });
-                 $.get(url2+"/AdventureMap/personajes/estadisticas/"+h2,function(data){
-                    $("#vidaE").text("vidaE: "+" "+data.x);
-                    $("#ataqueE").text("ataqueE: "+" "+data.y);
-                }).then(function(){
-                    console.log("excelente");
-                },function(err){
-                    alert("Ha ganado");
+                var personaje = JSON.parse(eventbody.body);
+                console.log("ESTE ES EL EVENTBODY1 " + eventbody);
+                var local = personaje[0];
+                var enemigo = personaje[1];
+                document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
+                console.log("Enemigo");
+                console.log(enemigo);
+                console.log("Local");
+                console.log(local);
+                console.log(enemigo.Tipo == "Monstruo");
+                console.log(enemigo.ataca == false);
+                console.log(enemigo.Tipo);
+                console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
+                if(enemigo.Tipo == "Monstruo"){
+                    console.log("Entra a pelea con monstruo");
+                    monstruo1 = enemigo.nombre;
+                    if(enemigo.ataca == false){
+                        intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
+                    }
+                    actualizarEstadisticasJugadorMonstruo(local,enemigo);
+                }else if(enemigo.ataca == true && local.ataca == false){
+                    console.log("Pela más de dos");
+                    alert("El enemigo esta en una pelea");
                     huirJugador();
-                });
+                }
+                else{
+                    actualizarEstadisticasJugadorJugador(local, enemigo);
+                }
+                // SI SOY ATACANTE
              });
-
-             // SUSCRIPCION PELEA O HUIDA
-             stompClient.subscribe("/App/atacando", function(eventbody){
-                 console.log("ENTRA A EVENTBODY DE HUIDA O PELEA1")
-                 console.log(eventbody.body)
-                $(".movement").prop('disabled', true);
-             });
-
+             
             // SUSCRIPCION PELEA DOS
             stompClient.subscribe("/App/atacando/masDos",function(eventbody){
                 var nombreAtacante = eventbody.body;
                 if(nombreAtacante == name){
-                    alert("El destino esta en combate ");
+                    setTimeout(function(){
+                        alert("No se puede ingresar, porque el destino esta en combate");
+                    }, 2000);
                 }
             });
 
@@ -190,13 +191,74 @@
             getElementsTablero();
       });      
     };
+    
+    function actualizarEstadisticasJugadorJugador(local, enemigo){
+        if(name == local.nombre){
+            $("#vidaP").text("vidaP: "+local.vida);
+            $("#ataqueP").text("ataqueP: "+" "+local.dano);
+            $("#vidaE").text("vidaE: "+" "+enemigo.vida);
+            $("#ataqueE").text("ataqueE: "+" "+enemigo.dano);
+            $(".movement").prop('disabled', true);
+            contrincante = enemigo;
+            if(local.vida == 0){
+                informarPerdida(function(){
+                    window.location = "/AdventureMap/Index.html";
+                });
+            }else if(enemigo.vida == 0){
+                alert("Ha ganado");
+                huirJugador();
+            }
+        }//SI SOY ENEMIGO
+        else if(name == enemigo.nombre){
+            $("#vidaE").text("vidaE: "+" "+local.vida);
+            $("#ataqueE").text("ataqueE: "+" "+local.dano);
+            $("#vidaP").text("vidaP: "+enemigo.vida);
+            $("#ataqueP").text("ataqueP: "+" "+enemigo.dano);
+            $(".movement").prop('disabled', true);
+            contrincante = local;
+            if(local.vida == 0){
+                alert("Ha Ganado");
+                huirJugador();
+            }
+            }else if(enemigo.vida == 0){
+                informarPerdida(function(){
+                    window.location = "/AdventureMap/Index.html";
+                });
+            }
+    }
+
+    function actualizarEstadisticasJugadorMonstruo(local, enemigo){
+        if(name == local.nombre){
+            $("#vidaP").text("vidaP: "+local.vida);
+            $("#ataqueP").text("ataqueP: "+" "+local.dano);
+            $("#vidaE").text("vidaE: "+" "+enemigo.vida);
+            $("#ataqueE").text("ataqueE: "+" "+enemigo.dano);
+            $(".movement").prop('disabled', true);
+            contrincante = enemigo;
+            if(local.vida == 0){
+                clearInterval(intervaloAtaqueMonstruo);
+                informarPerdida(function(){
+                    window.location = "/AdventureMap/Index.html";
+                });
+            }else if(enemigo.vida == 0){
+                clearInterval(intervaloAtaqueMonstruo);
+                alert("Ha ganado");
+                huirJugador();
+            }
+        }
+    }
+    
+    function informarPerdida(callback){
+        alert("Ha perdido");
+        setTimeout((callback, 2000));
+    }
 
     /**
      * Funcion generada para que se envie mensaje donde el jugador recibe el ataque
      */
     function ataqueMonstruo(){
         console.log("ENTRA A ATAQUE MONSTRUO ")
-        stompClient.send("/App/map/pelea."+monstruo1,{},jugador1);
+        stompClient.send("/App/map/pelea."+monstruo1,{},name);
     }
 
     /**
@@ -204,10 +266,9 @@
      * los jugadores guardados peleeen y al que hayan atacado, reciba daño en sus estadisticas
      */
     function atacarJugador(){
-        console.log("YO SOY EL "+h1)
-        console.log("EL ENEMIGO ES "+h2)
-        console.log(h1+" ATACA A "+h2)
-        stompClient.send("/App/map/pelea."+h1,{},h2);
+        console.log("YO SOY EL "+name)
+        console.log("EL ENEMIGO ES "+contrincante.nombre)
+        stompClient.send("/App/map/pelea."+name,{},contrincante.nombre);
     }
 
     /**
@@ -215,17 +276,12 @@
      * Lo primero que se hace es desuscribirse del topico de pelea que se genero al entrar en combate
      */
     function huirJugador(){
+        drawPlayer();
         $(".movement").prop('disabled', false);
-        if(subscribePelea != null){
-            subscribePelea.unsubscribe();
-            console.log("SE DESUBSCRIBE DE LA PELEA");
-            document.getElementById("imagenJugador").src = "img/CAMINANDO.jpg";
-            $("#vidaP").text("vidaP: ");
-            $("#ataqueP").text("ataqueP: ");
-            $("#vidaE").text("vidaE: ");
-            $("#ataqueE").text("ataqueE: ");
-
-        }
+        $("#vidaP").text("vidaP: ");
+        $("#ataqueP").text("ataqueP: ");
+        $("#vidaE").text("vidaE: ");
+        $("#ataqueE").text("ataqueE: ");
     } 
 
     $(document).ready(

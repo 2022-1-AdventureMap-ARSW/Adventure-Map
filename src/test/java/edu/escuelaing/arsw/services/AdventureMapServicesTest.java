@@ -110,6 +110,7 @@ public class AdventureMapServicesTest {
             }
         }catch(AdventureMapServicesPersistenceException e){
             if(e.getMessage() == AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR){
+                System.out.println("Se murio el personaje");
                 assertTrue(true);
             }else{
                 e.printStackTrace();

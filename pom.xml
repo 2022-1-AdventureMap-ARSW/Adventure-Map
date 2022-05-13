@@ -23,8 +23,7 @@
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-web</artifactId> 
-    </dependency>
-
+    </dependency>  
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-websocket</artifactId> 
@@ -33,7 +32,7 @@
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-test</artifactId>  
       <scope>test</scope> 
-    </dependency>
+    </dependency>  
     <dependency> 
       <groupId>org.webjars</groupId>  
       <artifactId>webjars-locator</artifactId> 
@@ -58,13 +57,18 @@
       <artifactId>jquery</artifactId>  
       <version>3.1.0</version> 
     </dependency> 
+    <dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20140107</version>
+</dependency>
   </dependencies>  
   <build> 
     <plugins> 
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
+      <plugin> 
+        <groupId>org.springframework.boot</groupId>  
+        <artifactId>spring-boot-maven-plugin</artifactId> 
+      </plugin>  
       <plugin> 
         <groupId>org.apache.maven.plugins</groupId>  
         <artifactId>maven-compiler-plugin</artifactId>  
@@ -88,33 +92,33 @@
           </execution> 
         </executions> 
       </plugin>  
-      <plugin>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-webapp-maven-plugin</artifactId>
-        <version>1.10.0</version>
-        <configuration>
-          <schemaVersion>V2</schemaVersion>
-          <resourceGroup>AdventureMap</resourceGroup>
-          <appName>AdventureMap-app</appName>
-          <pricingTier>F1</pricingTier>
-          <region>eastus</region>
-          <runtime>
-            <os>linux</os>
-            <javaVersion>jre8</javaVersion>
-            <webContainer>jre8</webContainer>
-          </runtime>
-          <deployment>
-            <resources>
-              <resource>
-                <directory>${project.basedir}/target</directory>
-                <includes>
-                  <include>*.jar</include>
-                </includes>
-              </resource>
-            </resources>
-          </deployment>
-        </configuration>
-      </plugin>
+      <plugin> 
+        <groupId>com.microsoft.azure</groupId>  
+        <artifactId>azure-webapp-maven-plugin</artifactId>  
+        <version>1.10.0</version>  
+        <configuration> 
+          <schemaVersion>V2</schemaVersion>  
+          <resourceGroup>AdventureMap</resourceGroup>  
+          <appName>AdventureMap-app</appName>  
+          <pricingTier>F1</pricingTier>  
+          <region>eastus</region>  
+          <runtime> 
+            <os>linux</os>  
+            <javaVersion>jre8</javaVersion>  
+            <webContainer>jre8</webContainer> 
+          </runtime>  
+          <deployment> 
+            <resources> 
+              <resource> 
+                <directory>${project.basedir}/target</directory>  
+                <includes> 
+                  <include>*.jar</include> 
+                </includes> 
+              </resource> 
+            </resources> 
+          </deployment> 
+        </configuration> 
+      </plugin> 
     </plugins> 
   </build> 
 </project>

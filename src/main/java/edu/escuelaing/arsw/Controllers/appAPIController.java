@@ -4,22 +4,40 @@ import edu.escuelaing.arsw.model.Jugador;
 import edu.escuelaing.arsw.model.Monstruo;
 import edu.escuelaing.arsw.model.Personaje;
 import edu.escuelaing.arsw.model.Tuple;
+import edu.escuelaing.arsw.persistence.AdventureMapPersistenceException;
 import edu.escuelaing.arsw.services.AdventureMapServices;
 import edu.escuelaing.arsw.services.persistence.AdventureMapServicesPersistenceException;
+
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Service
 @RestController
 public class appAPIController {
+
     @Autowired
     AdventureMapServices services;
+
+    private SimpMessagingTemplate smt;
+    @Autowired
+        public appAPIController(SimpMessagingTemplate smt){
+            this.smt = smt;
+        }
 
     /**
      * Funcion generada para retornar los monstruos que se han creado o que se tienen
@@ -29,12 +47,89 @@ public class appAPIController {
      */
     @RequestMapping(value = "/AdventureMap/monstruos", method = RequestMethod.GET)
     public ResponseEntity<?> manejadorgetMonstruos() {
-        ArrayList<Tuple> monstruos = null;
-        ResponseEntity<?> mensaje = null;
-        monstruos = services.getMonstruos();
-        mensaje = new ResponseEntity<>(monstruos, HttpStatus.ACCEPTED);
-        return mensaje;
-        
+        try{
+            ArrayList<Map<String,Object>> monstruos = null;
+            ResponseEntity<?> mensaje = null;
+            monstruos = services.getPersonajesJson("Monstruo");
+            System.out.println(monstruos);
+            mensaje = new ResponseEntity<>(monstruos, HttpStatus.ACCEPTED);
+            return mensaje;
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    /**
+     * Funcion para modificar el jugador indicado
+     * @param jugador Nombre del jugador a modificar
+     * @param rp Informacion a cambiar en el jugador
+     * @return
+     */
+    @RequestMapping(path = "/AdventureMap/jugadores/{jugador}",method = RequestMethod.PUT)
+    public ResponseEntity<?> putJugador(@PathVariable(name = "jugador") String jugador,@RequestBody Map<String,Object> rp) {
+        try {
+            Jugador j = (Jugador)services.getPersonaje(jugador);
+            Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
+            Tuple coordenadas = new Tuple((int)c.get("x"),(int)c.get("y"));
+            j.mover(coordenadas);
+            return new ResponseEntity<>(j.getJSON(),HttpStatus.ACCEPTED);
+        }catch(AdventureMapServicesPersistenceException ae){
+            if(ae.getMessage().equals(AdventureMapPersistenceException.ATACAR_EXCEPTION)){
+                return new ResponseEntity<>(false, HttpStatus.CONTINUE);
+            }
+            else{
+                ae.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    /**
+     * Funcion para modificar el monstruo indicado
+     * @param monstruo Nombre del monstruo a modificar
+     * @param rp Informacion a cambiar en el monstruo
+     * @return
+     */
+    @RequestMapping(path = "/AdventureMap/monstruos/{monstruo}",method = RequestMethod.PUT)
+    public ResponseEntity<?> putMonstruo(@PathVariable(name = "monstruo") String monstruo,@RequestBody Map<String,Object> rp) {
+        try {
+            Monstruo j = (Monstruo)services.getPersonaje(monstruo);
+            Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
+            Tuple coordenadas = new Tuple((int)c.get("x"),(int)c.get("y"));
+            j.mover(coordenadas);
+            return new ResponseEntity<>(j.getJSON(),HttpStatus.ACCEPTED);
+        }catch(AdventureMapServicesPersistenceException ae){
+            if(ae.getMessage() == AdventureMapPersistenceException.ATACAR_EXCEPTION){
+                return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
+            }
+            else{
+                return new ResponseEntity<>(true, HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(path = "/AdventureMap/jugadores",method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<?> postJugador(@RequestBody Map<String,Object> rp) {
+        try {
+            System.out.println(rp.toString());
+            Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
+            Tuple coordenadas = new Tuple((int)c.get("x"),(int)c.get("y"));
+            System.out.println("Nombre del JSOn" + rp.get("nombre"));
+            String nombre = (String) rp.get("nombre");
+            System.out.println("Nombre:" + nombre);
+            Jugador j = new Jugador(coordenadas, nombre, services.getTablero());
+            System.out.println("Se crea el jugador "+j);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -44,91 +139,33 @@ public class appAPIController {
      */
         @RequestMapping(value = "/AdventureMap/jugadores", method = RequestMethod.GET)
         public ResponseEntity<?> manejadorgetJugadores() {
-            ArrayList<Tuple> jugadores = null;
-            ResponseEntity<?> mensaje = null;
-            System.out.println("Se hace la solicitud de Jugadores");
-            jugadores = services.getJugadores();
-            System.out.println("Lista de jugadores: "+jugadores.toString());
-            mensaje = new ResponseEntity<>(jugadores, HttpStatus.ACCEPTED);
-            return mensaje;
+            try{
+                ArrayList jugadores = services.getPersonajesJson("Jugador");
+                return new ResponseEntity<>(jugadores, HttpStatus.ACCEPTED);
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            
         }
-
-        /**
-         * Función generada para retornar el mapa que se hizo en el backend.
-         * Esta conexión sirve para tener control sobre los movimientos de 
-         * jugadores y monstruos dentro del mapa pero en backend
-         * @return
-         */
-    @RequestMapping(value = "/AdventureMap/initMap", method = RequestMethod.GET)
-    public ResponseEntity<?> manejadorgetMapa(){
+    
+    /**
+     * Funcion generada para retornar el jugador indicado
+     * @param jugador Nombre del jugador a retornar
+     * @return
+     */
+    @RequestMapping(value = "/AdventureMap/jugadores/{nombre}", method = RequestMethod.GET, produces="application/json")
+    public ResponseEntity<Map<String,Object>> manejadorgetJugador(@PathVariable String nombre){
         ResponseEntity<?> mensaje = null;
         try{
-            services.iniciarMapa();
-        } catch (AdventureMapServicesPersistenceException e) {
-            e.printStackTrace();
-            mensaje = new ResponseEntity<>("No se pudo iniciar el mapa con los monstruos", HttpStatus.NOT_FOUND);
+            System.out.printf("Se consulta el recurso %s: ",nombre);
+            Personaje player = services.getJugador(nombre);
+            Jugador jugador = (Jugador)player;
+            System.out.println("\n" + jugador.toString());
+            return ResponseEntity.ok(jugador.getJSON());
+        }catch(Exception e){
+            return ResponseEntity.notFound().build();
         }
-        return mensaje;
-    }
-
-    /**
-     * Funcion generada para retornar un jugador a partir de su nombre. En este caso
-     * se dara la tupla de coordenadas donde este se encuentra
-     * @param personaje
-     * @return
-     */
-    @RequestMapping(value="/AdventureMap/personajes/{personaje}", method=RequestMethod.GET)
-    public ResponseEntity<?> manejadorGetJugadorTupla(@PathVariable String personaje) {
-        ResponseEntity<?> mensaje = null;
-            Tuple p = services.getPersonaje(new Tuple(personaje),true);
-            mensaje= new ResponseEntity<>(p,HttpStatus.ACCEPTED);
-        return mensaje;
-    }
-
-    /**
-     * 
-     * @param jugador
-     * @return
-     */
-    @RequestMapping(value = "/AdventureMap/jugadores/{jugador}", method=RequestMethod.GET)
-    public ResponseEntity<?> manejadorGetJugadorNombre(@PathVariable String jugador){
-        ResponseEntity<?> mensaje = null;
-        Tuple p;
-        try {
-            p = services.getPersonaje(jugador);
-            System.out.println(services.getPersonaje(jugador));
-            mensaje = new ResponseEntity<>(p,HttpStatus.ACCEPTED);
-        } catch (AdventureMapServicesPersistenceException e) {
-            // TODO Auto-generated catch block
-            mensaje = new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-        return mensaje;
-    }
-
-    /**
-     * Metodo creado para retornar las estadisticas del personaje indicado
-     * @param personaje Personaje a retornar estadisticas
-     * @return Estadisticas del jugador representadas como una tupla x: vida, y:dano
-     */
-    @RequestMapping(value="/AdventureMap/personajes/estadisticas/{personaje}", method=RequestMethod.GET)
-    public ResponseEntity<?> manejadorGetEstadisticasJugador(@PathVariable String personaje) {
-        ResponseEntity<?> mensaje = null;
-            Personaje p;
-            try {
-                p = services.getPersonaje(new Tuple(personaje));
-                //Creacion de la tupla por la cual se representan las estadisticas del jugador
-                System.out.println("ESTE ES EL PERSONAJE "+personaje);
-                //System.out.println(p.getVida());
-                System.out.println(p.getDano());
-                Tuple q = new Tuple(p.getVida(),p.getDano());
-                System.out.println("SOY EL JUGADOOR "+personaje+" MI VIDA ES "+p.getVida()+" Y MI DAÑO ES "+p.getDano());
-                mensaje= new ResponseEntity<>(q,HttpStatus.ACCEPTED);
-            } catch (AdventureMapServicesPersistenceException e) {
-                // TODO Auto-generated catch block
-                mensaje = new ResponseEntity<>("Personaje no encontrado", HttpStatus.NOT_FOUND);
-                e.printStackTrace();
-            }
-        return mensaje;
     }
 
 }
