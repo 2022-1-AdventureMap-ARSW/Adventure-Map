@@ -25,7 +25,7 @@ function getMonstruos(){
   if(count%4===0){
     count+=1;
     moverMonstruos(monstruos, function(){
-      stompClient.send('/App/jugadores/map',{},JSON.stringify(player));
+      console.log("Monstruos movidos");
     });
   }
   //console.log("COUNT"+count)
