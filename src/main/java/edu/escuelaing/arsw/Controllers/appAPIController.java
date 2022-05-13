@@ -132,10 +132,4 @@ public class appAPIController {
         return mensaje;
     }
 
-    @GetMapping("Admin")
-    @ResponseBody
-    @PreAuthorize("hasAuthority('APPROLE_Admin')")
-    public String Admin() {
-        return "Admin message";
-    }
 }
