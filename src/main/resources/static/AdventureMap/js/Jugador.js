@@ -23,7 +23,7 @@ function getJugadorVie(){
 }
 
 function getJugadores(){
-    $.get(url4+"AdventureMap/jugadores",function(data){
+    $.get(url3+"AdventureMap/jugadores",function(data){
         console.log("Jugadores obtenidos");
         console.log(data);
         jugadores_ = data;
