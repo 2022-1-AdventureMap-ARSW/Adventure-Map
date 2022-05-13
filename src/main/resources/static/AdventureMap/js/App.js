@@ -96,7 +96,7 @@
         console.log("ESTE ES EL JUGADOR"+name);
         var player = {"nombre":this.name, "posicion":getJugador()};
         $.ajax({
-            url: url4+"AdventureMap/jugadores/",
+            url: url5+"AdventureMap/jugadores/",
             type: "POST",
             data: JSON.stringify(player),	
             contentType: "application/json"
@@ -157,7 +157,7 @@
                         intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                     }
                     actualizarEstadisticasJugadorMonstruo(local,enemigo);
-                }else if(enemigo.ataca == true && local.ataca == false){
+                }else if(enemigo.ataca == true && local.ataca == false && enemigo.vida > 0){
                     console.log("Pela más de dos");
                     alert("El enemigo esta en una pelea");
                     huirJugador();
@@ -194,6 +194,7 @@
     
     function actualizarEstadisticasJugadorJugador(local, enemigo){
         if(name == local.nombre){
+            document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaP").text("vidaP: "+local.vida);
             $("#ataqueP").text("ataqueP: "+" "+local.dano);
             $("#vidaE").text("vidaE: "+" "+enemigo.vida);
@@ -210,6 +211,7 @@
             }
         }//SI SOY ENEMIGO
         else if(name == enemigo.nombre){
+            document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaE").text("vidaE: "+" "+local.vida);
             $("#ataqueE").text("ataqueE: "+" "+local.dano);
             $("#vidaP").text("vidaP: "+enemigo.vida);
@@ -228,7 +230,7 @@
     }
 
     function actualizarEstadisticasJugadorMonstruo(local, enemigo){
-        if(name == local.nombre){
+        if(name == local.nombre){document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaP").text("vidaP: "+local.vida);
             $("#ataqueP").text("ataqueP: "+" "+local.dano);
             $("#vidaE").text("vidaE: "+" "+enemigo.vida);
@@ -277,6 +279,7 @@
      */
     function huirJugador(){
         drawPlayer();
+        document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
         $("#vidaP").text("vidaP: ");
         $("#ataqueP").text("ataqueP: ");

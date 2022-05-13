@@ -13,7 +13,7 @@ let monstruos = [];
 
 
 function getMonstruos(){
-  $.get(url4+"AdventureMap/monstruos",function(data){
+  $.get(url5+"AdventureMap/monstruos",function(data){
     monstruos = data;
     console.log("Lista de monstruos obtenida");
     console.log(monstruos);
@@ -27,7 +27,7 @@ function getMonstruos(){
     monstruos.forEach(element => {
       move_monster(element,function(monster){
         $.ajax({
-          url: url4+"AdventureMap/monstruos/"+monster.nombre,
+          url: url5+"AdventureMap/monstruos/"+monster.nombre,
           type: "PUT",
           data: JSON.stringify(monster),	
           contentType: "application/json"
