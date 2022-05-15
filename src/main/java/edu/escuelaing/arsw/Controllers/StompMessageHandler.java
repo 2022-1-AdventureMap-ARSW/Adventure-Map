@@ -97,6 +97,7 @@ public class StompMessageHandler {
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
             }else if(e.getMessage().equals(AdventureMapPersistenceException.MAS_DE_DOS)){
+                System.out.println("Se entra en conflicto entre dos");
                 participantes.add(p.getJSON());
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
@@ -111,7 +112,6 @@ public class StompMessageHandler {
                     
                 //     msgt.convertAndSend("/App/pelea/jugaVSmons",participantes);
                 // }
-            }
             // else if(e.getMessage().equals(AdventureMapPersistenceException.MAS_DE_DOS)){
             //     System.out.println("YA ESTA EN PELEA EL OTRO 21");
             //     ams.moverPersonaje(p, new Tuple(origen));
