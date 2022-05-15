@@ -159,17 +159,20 @@
                 console.log(enemigo.Tipo == "Monstruo");
                 console.log(enemigo.ataca == false);
                 console.log(enemigo.Tipo);
-                actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
-                console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
-                if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
-                    monstruo1 = enemigo;
-                    jugador1 = local;
-                    console.log("El enemigo empieza a atacar");
-                    // intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
-                    ataqueMonstruo();
-                }
                 if(enemigo.ataca == true && local.ataca == false){
-                    alert("El destino esta en una pelea");
+                    if(local.nombre == name){
+                        alert("El destino esta en una pelea");
+                    }
+                }else{
+                    actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
+                    console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
+                    if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
+                        monstruo1 = enemigo;
+                        jugador1 = local;
+                        console.log("El enemigo empieza a atacar");
+                        // intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
+                        ataqueMonstruo();
+                    }
                 }
                 // if(enemigo.ataca == false && local.ataca == false){
                 //     actualizarEstadisticasJugadorJugador(local,enemigo,function(){
