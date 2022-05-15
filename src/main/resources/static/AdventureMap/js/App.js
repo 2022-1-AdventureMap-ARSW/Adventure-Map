@@ -235,6 +235,7 @@
             $("#ataqueE").text("ataqueE: "+" "+enemigo.dano);
             $(".movement").prop('disabled', true);
             contrincante = enemigo;
+            jugador1 = local;
             if(local.vida == 0){
                 alert("Ha perdido");
                 cancelarIntervalo();
@@ -255,6 +256,7 @@
             $("#ataqueP").text("ataqueP: "+" "+enemigo.dano);
             $(".movement").prop('disabled', true);
             contrincante = local;
+            jugador1 = enemigo;
             if(local.vida == 0){
                 alert("Ha Ganado");
                 cancelarIntervalo();
