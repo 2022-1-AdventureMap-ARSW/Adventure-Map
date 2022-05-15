@@ -228,12 +228,12 @@
             contrincante = enemigo;
             if(local.vida == 0){
                 alert("Ha perdido");
-                // clearInterval(intervaloAtaqueMonstruo);
-                // callback(cambiarVentana);
+                huirJugador();
+                callback(cambiarVentana);
             }else if(enemigo.vida == 0){
-                clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha ganado");
                 huirJugador();
+                
             }
         }//SI soy atacado
         else if(name == enemigo.nombre){
@@ -249,7 +249,7 @@
                 alert("Ha Ganado");
                 huirJugador();
             }else if(enemigo.vida == 0){
-                // alert("Ha perdido");
+                alert("Ha perdido");
                 huirJugador();
                 callback(cambiarVentana);
             }
