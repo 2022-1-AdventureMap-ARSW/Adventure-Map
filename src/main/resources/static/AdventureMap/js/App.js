@@ -278,9 +278,10 @@
     
     function informarPerdida(){
         alert("Ha perdido");
-        setTimeout((function(){
-            window.location = "/AdventureMap/Index.html";
-        }, 2000));
+        window.location = "/AdventureMap/Index.html";
+        // setTimeout((function(){
+        //     window.location = "/AdventureMap/Index.html";
+        // }, 2000));
     }
 
     /**
