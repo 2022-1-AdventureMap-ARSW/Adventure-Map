@@ -116,8 +116,12 @@
         )
     }
 
-    function cambiarVentana(){
-        console.log("Ha perdido");
+    function cancelarIntervalo(){
+        console.log("Cancelando Intervalo");
+        if(intervaloAtaqueMonstruo!= null){
+            console.log("Intervalo cancelado");
+            clearInterval(intervaloAtaqueMonstruo);
+        }
         // window.location = "/AdventureMap/Index.html";
     }
     /**
