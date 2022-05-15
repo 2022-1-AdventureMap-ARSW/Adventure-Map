@@ -147,7 +147,7 @@
                 document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
                 console.log("Enemigo");
                 console.log(enemigo);
-                console.log("Local");
+                console.log("Local ");
                 console.log(local);
                 console.log(enemigo.Tipo == "Monstruo");
                 console.log(enemigo.ataca == false);
