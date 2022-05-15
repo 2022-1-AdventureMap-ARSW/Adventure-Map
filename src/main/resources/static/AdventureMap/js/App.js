@@ -116,7 +116,10 @@
         )
     }
 
-
+    function cambiarVentana(){
+        console.log("Ha perdido");
+        // window.location = "/AdventureMap/Index.html";
+    }
     /**
      * Funcion generada para conectarse a STOMP, así como 
      * poder suscribirse a los topicos que se crearon
@@ -152,12 +155,7 @@
                 console.log(enemigo.Tipo == "Monstruo");
                 console.log(enemigo.ataca == false);
                 console.log(enemigo.Tipo);
-                actualizarEstadisticasJugadorJugador(local,enemigo,function(){
-                    informarPerdida(function(){
-                        console.log("Ha perdido");
-                        // window.location = "/AdventureMap/Index.html";
-                    });
-                });
+                actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
                 if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                     monstruo1 = enemigo.nombre;
@@ -230,7 +228,7 @@
             contrincante = enemigo;
             if(local.vida == 0){
                 clearInterval(intervaloAtaqueMonstruo);
-                callback();
+                callback(cambiarVentana);
             }else if(enemigo.vida == 0){
                 clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha ganado");
@@ -252,7 +250,7 @@
             }
             }else if(enemigo.vida == 0){
                 huirJugador();
-                callback();
+                callback(cambiarVentana);
             }
     }
 
