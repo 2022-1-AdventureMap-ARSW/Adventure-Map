@@ -96,6 +96,11 @@ public class StompMessageHandler {
                 participantes.add(p.getJSON());
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
+            }else if(e.getMessage().equals(AdventureMapPersistenceException.MAS_DE_DOS)){
+                participantes.add(p.getJSON());
+                participantes.add(enemy.getJSON());
+                msgt.convertAndSend("/App/pelea/",participantes);
+            }
                 //Tuple con las ubicaciones del personaje a mover y el personaje a atacar
                 //IDEA PARA ATAQUE DE MONSTRUOS
                 // if(ams.getPersonaje(destino).getClass() == Monstruo.class){

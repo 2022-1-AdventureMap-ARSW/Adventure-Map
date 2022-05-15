@@ -162,6 +162,9 @@
                     console.log("El enemigo empieza a atacar");
                     intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                 }
+                if(enemigo.ataca == true && local.ataca == false){
+                    alert("El destino esta en una pelea");
+                }
                 // if(enemigo.ataca == false && local.ataca == false){
                 //     actualizarEstadisticasJugadorJugador(local,enemigo,function(){
                 //         informarPerdida(function(){
@@ -276,8 +279,7 @@
         }
     }
     
-    function informarPerdida(){
-        alert("Ha perdido");
+    function informarPerdida(){8
         window.location = "/AdventureMap/Index.html";
         // setTimeout((function(){
         //     window.location = "/AdventureMap/Index.html";
