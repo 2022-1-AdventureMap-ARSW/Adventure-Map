@@ -70,11 +70,7 @@ public class appAPIController {
             Jugador j = (Jugador)services.getPersonaje(jugador);
             Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
             Tuple coordenadas = new Tuple((int)c.get("x"),(int)c.get("y"));
-            if(coordenadas.equals(j.getCoordenadas())){
-                j.mover(coordenadas);
-            }else if((boolean)rp.get("ataca") != j.getAtaca()){
-                j.setAtaca(false);
-            }
+            j.mover(coordenadas);
             return new ResponseEntity<>(j.getJSON(),HttpStatus.ACCEPTED);
         }catch(AdventureMapServicesPersistenceException ae){
             if(ae.getMessage().equals(AdventureMapPersistenceException.ATACAR_EXCEPTION)){

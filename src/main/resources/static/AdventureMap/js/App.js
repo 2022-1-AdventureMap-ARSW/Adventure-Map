@@ -159,17 +159,16 @@
                 console.log(enemigo.Tipo == "Monstruo");
                 console.log(enemigo.ataca == false);
                 console.log(enemigo.Tipo);
+                actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
-                if(enemigo.ataca == true && local.ataca == false){
-                    alert("El destino esta en una pelea");
-                }else{
-                    actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
-                }
                 if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                     monstruo1 = enemigo;
                     jugador1 = local;
                     console.log("El enemigo empieza a atacar");
                     intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
+                }
+                if(enemigo.ataca == true && local.ataca == false){
+                    alert("El destino esta en una pelea");
                 }
                 // if(enemigo.ataca == false && local.ataca == false){
                 //     actualizarEstadisticasJugadorJugador(local,enemigo,function(){
@@ -353,6 +352,7 @@
             }
             }
         }
+<<<<<<< HEAD
         console.log("Se supone que el monstruo huye");
         $.ajax({
             url: url5+"AdventureMap/jugadores/"+jugador1.nombre,
@@ -367,6 +367,8 @@
                 alert("No se pudo cambiar el estado del jugador");
             }
         );
+=======
+>>>>>>> parent of 04551b4 (Deploy)
         document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
         $("#vidaP").text("vidaP: ");
