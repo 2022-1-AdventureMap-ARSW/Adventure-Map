@@ -229,7 +229,7 @@
             if(local.vida == 0){
                 alert("Ha perdido");
                 huirJugador();
-                callback(cambiarVentana);
+                callback();
             }else if(enemigo.vida == 0){
                 alert("Ha ganado");
                 huirJugador();
@@ -251,7 +251,7 @@
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
                 huirJugador();
-                callback(cambiarVentana);
+                callback();
             }
         }
     }
@@ -276,9 +276,11 @@
         }
     }
     
-    function informarPerdida(callback){
+    function informarPerdida(){
         alert("Ha perdido");
-        setTimeout((callback, 2000));
+        setTimeout((function(){
+            window.location = "/AdventureMap/Index.html";
+        }, 2000));
     }
 
     /**
