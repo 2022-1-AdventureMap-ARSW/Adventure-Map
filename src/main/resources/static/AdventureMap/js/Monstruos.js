@@ -10,47 +10,49 @@ let url2 = "https://adventuremap-app.azurewebsites.net/";
 let url1 = "http://localhost:8080/";
 
 let monstruos = [];
+let monster = {};
 
 
 function getMonstruos(){
-  $.get(url5+"AdventureMap/monstruos",function(data){
+  $.get(url1+"AdventureMap/monstruos",function(data){
     monstruos = data;
     console.log("Lista de monstruos obtenida");
     console.log(monstruos);
-  }).then(function(){
-    drawMonsterPart(monstruos);
-  },function(err){
+  }).then(function(err){
     console.log("Monstruos no encontrados");
   });
   if(count%4===0){
     count+=1;
-    moverMonstruos(monstruos, function(){
-      console.log("Monstruos movidos");
-    });
-  }
+    monstruos.forEach(element => {
+      move_monster(element);
+      })
+    }
+    drawMonsterPart(monstruos);
   //console.log("COUNT"+count)
 }
 
 function moverMonstruos(monstruos, callback){
   monstruos.forEach(element => {
     move_monster(element,function(monster){
-      $.ajax({
-        url: url5+"AdventureMap/monstruos/"+monster.nombre,
-        type: "PUT",
-        data: JSON.stringify(monster),	
-        contentType: "application/json"
-    }).then(
-        function(){
-            console.log("Monstruo modificado");
-            console.log(monster);
-            // drawjugadoresPart(player.posicion);
-            stompClient.send('/App/jugadores/map',{},JSON.stringify(monster));
-        },
-        function(err){
-            console.log("No se pudo modificar el monstruo");
-            move_monster(element);
-        }
-    )
+      stompClient.stompClient.send("/App/map/mover/"+monster.nombre,{},JSON.stringify(monster.posicion));
+      
+    //   $.ajax({
+    //     url: url5+"AdventureMap/monstruos/"+monster.nombre,
+    //     type: "PUT",
+    //     data: JSON.stringify(monster),	
+    //     contentType: "application/json"
+    // }).then(
+    //     function(){
+    //         console.log("Monstruo modificado");
+    //         console.log(monster);
+    //         // drawjugadoresPart(player.posicion);
+    //         stompClient.send('/App/jugadores/map',{},JSON.stringify(monster));
+    //     },
+    //     function(err){
+    //         console.log("No se pudo modificar el monstruo");
+    //         move_monster(element);
+    //     }
+    // )
     });
   })
   callback();
@@ -148,7 +150,7 @@ function comprobar_otro_monstruo(monstruo, i){
 
 }
 
-function move_monster(monster,callback) {
+function move_monster(monster) {
       console.log("MUEVE EL MONSTRUO")
       let dx = 0;
       let dy = 0;
@@ -179,8 +181,7 @@ function move_monster(monster,callback) {
               //console.log("ESTE ES MONS: "+JSON.stringify(mons))
               //console.log("ESTE ES MONSTER" + JSON.stringify(monster));
               console.log(monster);
-              callback(monster);
-              //stompClient.send("/App/map/mover/monstruo/"+h,{},JSON.stringify(monster));
+              stompClient.send("/App/map/mover/"+monster.nombre,{},JSON.stringify(monster.posicion));
              // console.log(monster);
           }
         }

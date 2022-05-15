@@ -23,7 +23,7 @@ function getJugadorVie(){
 }
 
 function getJugadores(){
-    $.get(url5+"AdventureMap/jugadores",function(data){
+    $.get(url4+"AdventureMap/jugadores",function(data){
         console.log("Jugadores obtenidos");
         console.log(data);
         jugadores_ = data;
@@ -50,7 +50,7 @@ function random_player(min, max)
 
 function drawjugadoresPart(MonsterPart) {
    // console.log("ENTRA A DRAWJUGADORES")
-    // clear_board();
+    clear_board;
     maint();
     mainM();
     GameCanvasp_ctx.fillStyle = player_col;

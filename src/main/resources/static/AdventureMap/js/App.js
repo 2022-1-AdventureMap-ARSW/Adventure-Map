@@ -14,6 +14,9 @@
     const boton = document.querySelector("#botonAtaque");
     const url5 = 'https://adventuremap.herokuapp.com/';
 
+    let local_ = {};
+    let enemigo_ = {};
+
     /**
      * Funcion generada para redireccionar desde la página inicial
      * a la página donde se encuentra el mapa. Se recibe el nombre
@@ -96,7 +99,7 @@
         console.log("ESTE ES EL JUGADOR"+name);
         var player = {"nombre":this.name, "posicion":getJugador()};
         $.ajax({
-            url: url5+"AdventureMap/jugadores/",
+            url: url4+"AdventureMap/jugadores/",
             type: "POST",
             data: JSON.stringify(player),	
             contentType: "application/json"
@@ -149,22 +152,43 @@
                 console.log(enemigo.Tipo == "Monstruo");
                 console.log(enemigo.ataca == false);
                 console.log(enemigo.Tipo);
+                actualizarEstadisticasJugadorJugador(local,enemigo,function(){
+                    informarPerdida(function(){
+                        console.log("Ha perdido");
+                        window.location = "/AdventureMap/Index.html";
+                    });
+                });
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
-                if(enemigo.Tipo == "Monstruo"){
-                    console.log("Entra a pelea con monstruo");
+                if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                     monstruo1 = enemigo.nombre;
-                    if(enemigo.ataca == false){
-                        intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
-                    }
-                    actualizarEstadisticasJugadorMonstruo(local,enemigo);
-                }else if(enemigo.ataca == true && local.ataca == false && enemigo.vida > 0 && local.vida > 0){
-                    console.log("Pela más de dos");
-                    alert("El enemigo esta en una pelea");
-                    huirJugador();
+                    intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                 }
-                else{
-                    actualizarEstadisticasJugadorJugador(local, enemigo);
-                }
+                // if(enemigo.ataca == false && local.ataca == false){
+                //     actualizarEstadisticasJugadorJugador(local,enemigo,function(){
+                //         informarPerdida(function(){
+                //             window.location = "/AdventureMap/Index.html";
+                //         });
+                //     })
+                // }
+                // if(enemigo.Tipo == "Monstruo"){
+                //     console.log("Entra a pelea con monstruo");
+                //     monstruo1 = enemigo.nombre;
+                //     if(enemigo.ataca == false && enemigo.vida > 0){
+                //         intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
+                //     }
+                //     actualizarEstadisticasJugadorMonstruo(local,enemigo);
+                // }else if(enemigo != "Monstruo" && enemigo.ataca == true && local.ataca == false && enemigo.vida > 0 && local.vida > 0){
+                //     console.log("Pela más de dos");
+                //     alert("El enemigo esta en una pelea");
+                //     huirJugador();
+                // }
+                // else{
+                //     actualizarEstadisticasJugadorJugador(local, enemigo, function(){
+                //         informarPerdida(function(){
+                //             window.location = "/AdventureMap/Index.html";
+                //         });
+                //     });
+                // }
                 // SI SOY ATACANTE
              });
              
@@ -192,8 +216,10 @@
       });      
     };
     
-    function actualizarEstadisticasJugadorJugador(local, enemigo){
+    function actualizarEstadisticasJugadorJugador(local, enemigo,callback){
+        //Si ataco
         if(name == local.nombre){
+            console.log("ATACO");
             document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaP").text("vidaP: "+local.vida);
             $("#ataqueP").text("ataqueP: "+" "+local.dano);
@@ -202,15 +228,16 @@
             $(".movement").prop('disabled', true);
             contrincante = enemigo;
             if(local.vida == 0){
-                informarPerdida(function(){
-                    window.location = "/AdventureMap/Index.html";
-                });
+                clearInterval(intervaloAtaqueMonstruo);
+                callback();
             }else if(enemigo.vida == 0){
+                clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha ganado");
                 huirJugador();
             }
-        }//SI SOY ENEMIGO
+        }//SI soy atacado
         else if(name == enemigo.nombre){
+            console.log("ME ATACAN");
             document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaE").text("vidaE: "+" "+local.vida);
             $("#ataqueE").text("ataqueE: "+" "+local.dano);
@@ -219,13 +246,14 @@
             $(".movement").prop('disabled', true);
             contrincante = local;
             if(local.vida == 0){
+                clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha Ganado");
                 huirJugador();
             }
             }else if(enemigo.vida == 0){
-                informarPerdida(function(){
-                    window.location = "/AdventureMap/Index.html";
-                });
+                clearInterval(intervaloAtaqueMonstruo);
+                huirJugador();
+                callback();
             }
     }
 
@@ -238,7 +266,7 @@
             $(".movement").prop('disabled', true);
             contrincante = enemigo;
             if(local.vida == 0){
-                clearInterval(intervaloAtaqueMonstruo);
+                huirJugador();
                 informarPerdida(function(){
                     window.location = "/AdventureMap/Index.html";
                 });
@@ -279,6 +307,9 @@
      */
     function huirJugador(){
         drawPlayer();
+        if(intervaloAtaqueMonstruo!= null){
+            clearInterval(intervaloAtaqueMonstruo);
+        }
         document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
         $("#vidaP").text("vidaP: ");

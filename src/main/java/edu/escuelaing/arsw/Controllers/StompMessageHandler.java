@@ -116,7 +116,9 @@ public class StompMessageHandler {
             // else{
             //     e.printStackTrace();
             // }
-            e.printStackTrace();
+            else{
+                e.printStackTrace();
+            }
         }
         catch(Exception ex){
             ex.printStackTrace();
@@ -126,6 +128,9 @@ public class StompMessageHandler {
     @MessageMapping("/map/pelea.{propio}")
     public void handlePelear(@DestinationVariable String propio, String enemigo) throws AdventureMapServicesPersistenceException{
         Personaje p = ams.getPersonaje(propio);
+        if(enemigo.equals("HUIR")){
+            p.setAtaca(false);
+        }
         Personaje v = ams.getPersonaje(enemigo);
         ArrayList<Map<String,Object>> participantes = new ArrayList();
         try {
@@ -135,6 +140,8 @@ public class StompMessageHandler {
             System.out.println(e.getMessage());
             if(e.getMessage().equals(AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR)){
                 System.out.println("JUGADOR HA MUERTO");
+                v.setAtaca(false);
+                p.setAtaca(false);
                 quitarJugador();
             }
             e.printStackTrace();

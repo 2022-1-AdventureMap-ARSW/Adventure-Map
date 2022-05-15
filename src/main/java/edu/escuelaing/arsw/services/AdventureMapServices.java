@@ -56,8 +56,8 @@ public class AdventureMapServices {
             Tuple newPosicion = new Tuple(x,y);
             try{
                 while(tablero.getPersonaje(newPosicion)!=null){
-                    x = Math.round((float)Math.random()*tTablero);
-                    y = Math.round((float)Math.random()*tTablero);
+                    x = (int)Math.round((Math.random() * (290-0) + 0) / 10) * 10;
+                    y = (int)Math.round((Math.random() * (290-0) + 0) / 10) * 10;
                     newPosicion = new Tuple(x, y);
                 }
                     Monstruo m = new Monstruo(newPosicion, tablero, "Monstruo"+(i+1));
