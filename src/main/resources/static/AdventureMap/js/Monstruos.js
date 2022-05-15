@@ -18,7 +18,9 @@ function getMonstruos(){
     monstruos = data;
     console.log("Lista de monstruos obtenida");
     console.log(monstruos);
-  }).then(function(err){
+  }).then(function(){
+    console.log("Monstruos enviados");
+  },function(err){
     console.log("Monstruos no encontrados");
   });
   if(count%4===0){

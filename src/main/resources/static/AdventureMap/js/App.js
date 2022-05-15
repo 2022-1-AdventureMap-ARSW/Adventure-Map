@@ -161,6 +161,7 @@
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
                 if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                     monstruo1 = enemigo.nombre;
+                    console.log("El enemigo empieza a atacar");
                     intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                 }
                 // if(enemigo.ataca == false && local.ataca == false){
