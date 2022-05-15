@@ -249,9 +249,9 @@
                 alert("Ha Ganado");
                 huirJugador();
             }else if(enemigo.vida == 0){
-                alert("Ha perdido");
-                // huirJugador();
-                // callback(cambiarVentana);
+                // alert("Ha perdido");
+                huirJugador();
+                callback(cambiarVentana);
             }
         }
     }
