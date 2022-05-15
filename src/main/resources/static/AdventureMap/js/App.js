@@ -243,7 +243,7 @@
             }else if(enemigo.vida == 0){
                 alert("Ha ganado");
                 cancelarIntervalo();
-                huirJugador(local);
+                huirJugador();
                 
             }
         }//SI soy atacado
@@ -260,7 +260,7 @@
             if(local.vida == 0){
                 alert("Ha Ganado");
                 cancelarIntervalo();
-                huirJugador(enemigo);
+                huirJugador();
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
                 cancelarIntervalo();
@@ -337,7 +337,7 @@
      * Funcion generada para que el jugador huya de la pelea que tiene con otro jugador o monstruo
      * Lo primero que se hace es desuscribirse del topico de pelea que se genero al entrar en combate
      */
-    function huirJugador(player){
+    function huirJugador(){
         console.log("Se supone que el personaje huye");
         cancelarIntervalo();
         drawPlayer();
@@ -355,9 +355,9 @@
         }
         console.log("Se supone que el monstruo huye");
         $.ajax({
-            url: url5+"AdventureMap/jugadores/"+player.nombre,
+            url: url5+"AdventureMap/jugadores/"+jugador1.nombre,
             type: "PUT",
-            data: JSON.stringify(player),	
+            data: JSON.stringify(jugador1),	
             contentType: "application/json"
         }).then(
             function(){
