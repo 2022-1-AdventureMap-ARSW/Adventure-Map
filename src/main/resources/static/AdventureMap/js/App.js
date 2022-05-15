@@ -248,7 +248,6 @@
             if(local.vida == 0){
                 alert("Ha Ganado");
                 huirJugador();
-            }
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
                 // huirJugador();
