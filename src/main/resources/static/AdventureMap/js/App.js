@@ -13,7 +13,7 @@
     let intervaloAtaqueMonstruo;
     const boton = document.querySelector("#botonAtaque");
     const url5 = 'https://adventuremap.herokuapp.com/';
-
+    var contadorAtaque = 0;
     var local = {};
     var enemigo = {};
 
@@ -99,7 +99,7 @@
         console.log("ESTE ES EL JUGADOR"+name);
         var player = {"nombre":this.name, "posicion":getJugador()};
         $.ajax({
-            url: url5+"AdventureMap/jugadores/",
+            url: url4+"AdventureMap/jugadores/",
             type: "POST",
             data: JSON.stringify(player),	
             contentType: "application/json"
@@ -165,7 +165,8 @@
                     monstruo1 = enemigo;
                     jugador1 = local;
                     console.log("El enemigo empieza a atacar");
-                    intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
+                    // intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
+                    ataqueMonstruo();
                 }
                 if(enemigo.ataca == true && local.ataca == false){
                     alert("El destino esta en una pelea");
@@ -310,6 +311,12 @@
      * los jugadores guardados peleeen y al que hayan atacado, reciba daño en sus estadisticas
      */
     function atacarJugador(){
+        if(contrincante.Tipo == "Monstruo"){
+            contadorAtaque +=1;        
+            if(contadorAtaque %2 == 0){
+                ataqueMonstruo();
+            }
+        }
         console.log("YO SOY EL "+name)
         console.log("EL ENEMIGO ES "+contrincante.nombre)
         stompClient.send("/App/map/pelea."+name,{},contrincante.nombre);
@@ -318,7 +325,7 @@
     function huirMonstruo(){
         console.log("Se supone que el monstruo huye");
         $.ajax({
-            url: url5+"AdventureMap/monstruos/"+monstruo1.nombre,
+            url: url4+"AdventureMap/monstruos/"+monstruo1.nombre,
             type: "PUT",
             data: JSON.stringify(monstruo1),	
             contentType: "application/json"
@@ -352,10 +359,9 @@
             }
             }
         }
-<<<<<<< HEAD
         console.log("Se supone que el monstruo huye");
         $.ajax({
-            url: url5+"AdventureMap/jugadores/"+jugador1.nombre,
+            url: url4+"AdventureMap/jugadores/"+jugador1.nombre,
             type: "PUT",
             data: JSON.stringify(jugador1),	
             contentType: "application/json"
@@ -367,8 +373,6 @@
                 alert("No se pudo cambiar el estado del jugador");
             }
         );
-=======
->>>>>>> parent of 04551b4 (Deploy)
         document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
         $("#vidaP").text("vidaP: ");
