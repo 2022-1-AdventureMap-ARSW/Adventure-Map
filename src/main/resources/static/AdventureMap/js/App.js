@@ -247,12 +247,10 @@
             $(".movement").prop('disabled', true);
             contrincante = local;
             if(local.vida == 0){
-                clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha Ganado");
                 huirJugador();
             }
             }else if(enemigo.vida == 0){
-                clearInterval(intervaloAtaqueMonstruo);
                 huirJugador();
                 callback();
             }
@@ -272,7 +270,6 @@
                     window.location = "/AdventureMap/Index.html";
                 });
             }else if(enemigo.vida == 0){
-                clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha ganado");
                 huirJugador();
             }
@@ -307,6 +304,7 @@
      * Lo primero que se hace es desuscribirse del topico de pelea que se genero al entrar en combate
      */
     function huirJugador(){
+        console.log("Se supone que el personaje huye");
         drawPlayer();
         if(intervaloAtaqueMonstruo!= null){
             clearInterval(intervaloAtaqueMonstruo);
