@@ -6,13 +6,18 @@
 const msalConfig = {
     auth: {
         // 'Application (client) ID' of app registration in Azure portal - this value is a GUID
-        clientId: "10600804-1da5-432a-9dac-f62c392cc70b",
+        //clientId: "8c4211e1-fb39-41ea-b9d4-502bdb6d3a3f", //local
+        clientId: "10600804-1da5-432a-9dac-f62c392cc70b", //heroku
+        //clientId: "", //azure
+
         // Full directory URL, in the form of https://login.microsoftonline.com/<tenant>
         authority: "https://login.microsoftonline.com/common",
+
         // Full redirect URL, in form of http://localhost:3000
         //redirectUri: "http://localhost:8080/AdventureMap/Index.html",
-        //redirectUri: "http://projectarsw.australiaeast.cloudapp.azure.com:8080/AdventureMap/Index.html",
         redirectUri: "https://adventuremap.herokuapp.com/AdventureMap/Index.html",
+        //redirectUri: "http://projectarsw.australiaeast.cloudapp.azure.com:8080/AdventureMap/Index.html",
+
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
