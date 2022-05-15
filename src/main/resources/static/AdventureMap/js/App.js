@@ -227,8 +227,9 @@
             $(".movement").prop('disabled', true);
             contrincante = enemigo;
             if(local.vida == 0){
-                clearInterval(intervaloAtaqueMonstruo);
-                callback(cambiarVentana);
+                alert("Ha perdido");
+                // clearInterval(intervaloAtaqueMonstruo);
+                // callback(cambiarVentana);
             }else if(enemigo.vida == 0){
                 clearInterval(intervaloAtaqueMonstruo);
                 alert("Ha ganado");
@@ -249,8 +250,9 @@
                 huirJugador();
             }
             }else if(enemigo.vida == 0){
-                huirJugador();
-                callback(cambiarVentana);
+                alert("Ha perdido");
+                // huirJugador();
+                // callback(cambiarVentana);
             }
     }
 
