@@ -155,7 +155,7 @@
                 actualizarEstadisticasJugadorJugador(local,enemigo,function(){
                     informarPerdida(function(){
                         console.log("Ha perdido");
-                        window.location = "/AdventureMap/Index.html";
+                        // window.location = "/AdventureMap/Index.html";
                     });
                 });
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
