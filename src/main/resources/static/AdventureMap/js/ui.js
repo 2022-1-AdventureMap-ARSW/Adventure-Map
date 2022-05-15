@@ -17,3 +17,4 @@ function showWelcomeMessage(username) {
 function updateUI() {
     console.log('Game responded at: ' + new Date().toString());
 }
+

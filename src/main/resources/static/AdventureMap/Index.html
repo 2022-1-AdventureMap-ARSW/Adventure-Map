@@ -33,6 +33,12 @@
     <script type="text/javascript" src="js/authConfig.js"></script>
     <script type="text/javascript" src="js/ui.js"></script>
     <script type="text/javascript" src="js/authPopup.js"></script>
+    <script>
+    function signIntwo(){
+        const signInButton = document.getElementById("entergame");
+        signInButton.removeAttribute("hidden")
+    }
+    </script>
 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
@@ -43,6 +49,7 @@
                 <h1>Adventure Map log in</h1>
                 <h1>Para ingresar al juego, hacer el login!</h1>
                 <button type="button" id="SignIn" class="btn btn-secondary" onclick="signIn()" >Sign In</button>
+                <button type="button" id="SignInna" class="btn btn-secondary" onclick="signIntwo()" >Sign In sin autenticacion</button>
             </div>
 
             <form>
