@@ -121,6 +121,7 @@
         if(intervaloAtaqueMonstruo!= null){
             console.log("Intervalo cancelado");
             clearInterval(intervaloAtaqueMonstruo);
+            clearInterval(intervaloAtaqueMonstruo);
         }
         // window.location = "/AdventureMap/Index.html";
     }
@@ -335,6 +336,7 @@
      */
     function huirJugador(){
         console.log("Se supone que el personaje huye");
+        cancelarIntervalo();
         drawPlayer();
         if (monstruo1 != null){
             if(monstruo1.nombre == local.nombre){
