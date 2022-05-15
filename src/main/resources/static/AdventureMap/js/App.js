@@ -159,16 +159,17 @@
                 console.log(enemigo.Tipo == "Monstruo");
                 console.log(enemigo.ataca == false);
                 console.log(enemigo.Tipo);
-                actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
+                if(enemigo.ataca == true && local.ataca == false){
+                    alert("El destino esta en una pelea");
+                }else{
+                    actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
+                }
                 if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                     monstruo1 = enemigo;
                     jugador1 = local;
                     console.log("El enemigo empieza a atacar");
                     intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
-                }
-                if(enemigo.ataca == true && local.ataca == false){
-                    alert("El destino esta en una pelea");
                 }
                 // if(enemigo.ataca == false && local.ataca == false){
                 //     actualizarEstadisticasJugadorJugador(local,enemigo,function(){
@@ -241,7 +242,7 @@
             }else if(enemigo.vida == 0){
                 alert("Ha ganado");
                 cancelarIntervalo();
-                huirJugador();
+                huirJugador(local);
                 
             }
         }//SI soy atacado
@@ -257,7 +258,7 @@
             if(local.vida == 0){
                 alert("Ha Ganado");
                 cancelarIntervalo();
-                huirJugador();
+                huirJugador(enemigo);
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
                 cancelarIntervalo();
@@ -334,7 +335,7 @@
      * Funcion generada para que el jugador huya de la pelea que tiene con otro jugador o monstruo
      * Lo primero que se hace es desuscribirse del topico de pelea que se genero al entrar en combate
      */
-    function huirJugador(){
+    function huirJugador(player){
         console.log("Se supone que el personaje huye");
         cancelarIntervalo();
         drawPlayer();
@@ -350,6 +351,20 @@
             }
             }
         }
+        console.log("Se supone que el monstruo huye");
+        $.ajax({
+            url: url5+"AdventureMap/jugadores/"+player.nombre,
+            type: "PUT",
+            data: JSON.stringify(player),	
+            contentType: "application/json"
+        }).then(
+            function(){
+                console.log("Estado de jugador cambiado");
+            },
+            function(err){
+                alert("No se pudo cambiar el estado del jugador");
+            }
+        );
         document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
         $("#vidaP").text("vidaP: ");
