@@ -97,7 +97,11 @@ public class appAPIController {
             Monstruo j = (Monstruo)services.getPersonaje(monstruo);
             Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
             Tuple coordenadas = new Tuple((int)c.get("x"),(int)c.get("y"));
-            j.mover(coordenadas);
+            if(coordenadas.equals(j.getCoordenadas())){
+                j.mover(coordenadas);
+            }else if((boolean)rp.get("ataca") != j.getAtaca()){
+                j.setAtaca(false);
+            }
             return new ResponseEntity<>(j.getJSON(),HttpStatus.ACCEPTED);
         }catch(AdventureMapServicesPersistenceException ae){
             if(ae.getMessage() == AdventureMapPersistenceException.ATACAR_EXCEPTION){

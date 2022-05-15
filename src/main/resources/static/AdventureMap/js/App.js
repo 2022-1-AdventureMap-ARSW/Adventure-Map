@@ -158,7 +158,7 @@
                 actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
                 if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
-                    monstruo1 = enemigo.nombre;
+                    monstruo1 = enemigo;
                     console.log("El enemigo empieza a atacar");
                     intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                 }
@@ -291,7 +291,7 @@
      */
     function ataqueMonstruo(){
         console.log("ENTRA A ATAQUE MONSTRUO ")
-        stompClient.send("/App/map/pelea."+monstruo1,{},name);
+        stompClient.send("/App/map/pelea."+monstruo1.nombre,{},name);
     }
 
     /**
@@ -304,6 +304,23 @@
         stompClient.send("/App/map/pelea."+name,{},contrincante.nombre);
     }
 
+    function huirMonstruo(){
+        console.log("Se supone que el monstruo huye");
+        $.ajax({
+            url: url5+"AdventureMap/jugadores/"+monstruo1.nombre,
+            type: "PUT",
+            data: JSON.stringify(monstruo1),	
+            contentType: "application/json"
+        }).then(
+            function(){
+                console.log("Estado de monstruo cambiado");
+            },
+            function(err){
+                alert("No se pudo cambiar el estado del monstruo");
+            }
+        )
+    }
+
     /**
      * Funcion generada para que el jugador huya de la pelea que tiene con otro jugador o monstruo
      * Lo primero que se hace es desuscribirse del topico de pelea que se genero al entrar en combate
@@ -313,6 +330,9 @@
         drawPlayer();
         if(intervaloAtaqueMonstruo!= null){
             clearInterval(intervaloAtaqueMonstruo);
+        }
+        if (monstruo1 != null){
+            huirMonstruo();
         }
         document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
