@@ -253,6 +253,7 @@
                 // huirJugador();
                 // callback(cambiarVentana);
             }
+        }
     }
 
     function actualizarEstadisticasJugadorMonstruo(local, enemigo){
