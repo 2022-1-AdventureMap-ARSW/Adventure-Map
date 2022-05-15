@@ -237,6 +237,9 @@
                 callback();
             }else if(enemigo.vida == 0){
                 alert("Ha ganado");
+                if(intervaloAtaqueMonstruo!= null){
+                    clearInterval(intervaloAtaqueMonstruo);
+                }
                 huirJugador();
                 
             }
@@ -252,6 +255,9 @@
             contrincante = local;
             if(local.vida == 0){
                 alert("Ha Ganado");
+                if(intervaloAtaqueMonstruo!= null){
+                    clearInterval(intervaloAtaqueMonstruo);
+                }
                 huirJugador();
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
