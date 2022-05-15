@@ -159,6 +159,7 @@
                 console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
                 if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                     monstruo1 = enemigo;
+                    jugador1 = local;
                     console.log("El enemigo empieza a atacar");
                     intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                 }
@@ -291,7 +292,7 @@
      */
     function ataqueMonstruo(){
         console.log("ENTRA A ATAQUE MONSTRUO ")
-        stompClient.send("/App/map/pelea."+monstruo1.nombre,{},name);
+        stompClient.send("/App/map/pelea."+monstruo1.nombre,{},jugador1.nombre);
     }
 
     /**
@@ -307,7 +308,7 @@
     function huirMonstruo(){
         console.log("Se supone que el monstruo huye");
         $.ajax({
-            url: url5+"AdventureMap/jugadores/"+monstruo1.nombre,
+            url: url5+"AdventureMap/monstruos/"+monstruo1.nombre,
             type: "PUT",
             data: JSON.stringify(monstruo1),	
             contentType: "application/json"
