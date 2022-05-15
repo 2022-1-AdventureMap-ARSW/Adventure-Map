@@ -14,8 +14,8 @@
     const boton = document.querySelector("#botonAtaque");
     const url5 = 'https://adventuremap.herokuapp.com/';
 
-    let local_ = {};
-    let enemigo_ = {};
+    var local = {};
+    var enemigo = {};
 
     /**
      * Funcion generada para redireccionar desde la página inicial
@@ -145,9 +145,8 @@
              subscribePelea = stompClient.subscribe("/App/pelea/", function(eventbody){
                 var personaje = JSON.parse(eventbody.body);
                 console.log("ESTE ES EL EVENTBODY1 " + eventbody);
-                var local = personaje[0];
-                var enemigo = personaje[1];
-                document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
+                local = personaje[0];
+                enemigo = personaje[1];
                 console.log("Enemigo");
                 console.log(enemigo);
                 console.log("Local ");
@@ -232,7 +231,9 @@
             contrincante = enemigo;
             if(local.vida == 0){
                 alert("Ha perdido");
-                huirJugador();
+                if(intervaloAtaqueMonstruo!= null){
+                    clearInterval(intervaloAtaqueMonstruo);
+                }
                 callback();
             }else if(enemigo.vida == 0){
                 alert("Ha ganado");
@@ -254,7 +255,9 @@
                 huirJugador();
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
-                huirJugador();
+                if(intervaloAtaqueMonstruo!= null){
+                    clearInterval(intervaloAtaqueMonstruo);
+                }
                 callback();
             }
         }
@@ -269,7 +272,9 @@
             $(".movement").prop('disabled', true);
             contrincante = enemigo;
             if(local.vida == 0){
-                huirJugador();
+                if(intervaloAtaqueMonstruo!= null){
+                    clearInterval(intervaloAtaqueMonstruo);
+                }
                 informarPerdida(function(){
                     window.location = "/AdventureMap/Index.html";
                 });
@@ -280,7 +285,7 @@
         }
     }
     
-    function informarPerdida(){8
+    function informarPerdida(){
         window.location = "/AdventureMap/Index.html";
         // setTimeout((function(){
         //     window.location = "/AdventureMap/Index.html";
@@ -329,11 +334,17 @@
     function huirJugador(){
         console.log("Se supone que el personaje huye");
         drawPlayer();
-        if(intervaloAtaqueMonstruo!= null){
-            clearInterval(intervaloAtaqueMonstruo);
-        }
         if (monstruo1 != null){
-            huirMonstruo();
+            if(monstruo1.nombre == local.nombre){
+                if(local.vida > 0){
+                    huirMonstruo();
+                }
+            else if(monstruo1.nombre == enemigo.nombre){
+                if(enemigo.vida > 0){
+                    huirMonstruo();
+                }
+            }
+            }
         }
         document.getElementById("imagenJugador").src ="img/CAMINANDO.jpg";
         $(".movement").prop('disabled', false);
