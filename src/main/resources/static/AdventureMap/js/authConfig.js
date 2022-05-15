@@ -6,11 +6,12 @@
 const msalConfig = {
     auth: {
         // 'Application (client) ID' of app registration in Azure portal - this value is a GUID
-        clientId: "Eeb8592ec-e572-45f2-bcfc-92b3abb6486d",
+        clientId: "19fc8d28-0f37-4583-912e-ce595a01e0fb",
         // Full directory URL, in the form of https://login.microsoftonline.com/<tenant>
-        authority: "50640584-2a40-4216-a84b-9b3ee0f3f6cf",
+        authority: "https://login.microsoftonline.com/common",
         // Full redirect URL, in form of http://localhost:3000
-        redirectUri: "http://localhost:8080/AdventureMap/Index.html",
+        //redirectUri: "http://localhost:8080/AdventureMap/Index.html",
+        redirectUri: "http://projectarsw.australiaeast.cloudapp.azure.com:8080/AdventureMap/Index.html",
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored
