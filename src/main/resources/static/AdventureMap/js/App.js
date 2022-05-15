@@ -235,15 +235,11 @@
             contrincante = enemigo;
             if(local.vida == 0){
                 alert("Ha perdido");
-                if(intervaloAtaqueMonstruo!= null){
-                    clearInterval(intervaloAtaqueMonstruo);
-                }
+                cancelarIntervalo();
                 callback();
             }else if(enemigo.vida == 0){
                 alert("Ha ganado");
-                if(intervaloAtaqueMonstruo!= null){
-                    clearInterval(intervaloAtaqueMonstruo);
-                }
+                cancelarIntervalo();
                 huirJugador();
                 
             }
@@ -259,15 +255,11 @@
             contrincante = local;
             if(local.vida == 0){
                 alert("Ha Ganado");
-                if(intervaloAtaqueMonstruo!= null){
-                    clearInterval(intervaloAtaqueMonstruo);
-                }
+                cancelarIntervalo();
                 huirJugador();
             }else if(enemigo.vida == 0){
                 alert("Ha perdido");
-                if(intervaloAtaqueMonstruo!= null){
-                    clearInterval(intervaloAtaqueMonstruo);
-                }
+                cancelarIntervalo();
                 callback();
             }
         }
