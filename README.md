@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/2022-1-AdventureMap-ARSW/Adventure-Map/tree/main.svg?style=svg)](https://circleci.com/gh/2022-1-AdventureMap-ARSW/Adventure-Map/tree/main)
 # Adventure-Map
 Proyecto final ARSW 2022-1 Adventure Map
 
