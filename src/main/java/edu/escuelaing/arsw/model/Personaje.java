@@ -51,7 +51,7 @@ public abstract class Personaje extends Thread{
             while(vida >0){   
                 long actual = System.currentTimeMillis();
                 if(actual - time > 5000){
-                        sleep(1000);
+                    sleep(1000);
                 }
             }
         }catch (InterruptedException e) {
@@ -83,7 +83,7 @@ public abstract class Personaje extends Thread{
             setAtaca(true);
             p.sufrirAtaque(dano);
         }catch(AdventureMapPersistenceException  ea){
-            if(ea.getMessage() == AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR){
+            if(ea.getMessage().equals(AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR)){
                 setAtaca(false);
             }
             throw ea;
