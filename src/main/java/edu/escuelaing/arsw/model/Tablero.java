@@ -60,7 +60,6 @@ public class Tablero {
             personaje.setCoordenadas(end);
             tablero.put(end.toString(), personaje);
         }catch(Exception e){
-            //e.printStackTrace();
             throw new AdventureMapPersistenceException(e.getMessage(), e.getCause());
         }
 

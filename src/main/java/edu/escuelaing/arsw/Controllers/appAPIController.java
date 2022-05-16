@@ -53,7 +53,6 @@ public class appAPIController {
             mensaje = new ResponseEntity<>(monstruos, HttpStatus.ACCEPTED);
             return mensaje;
         }catch(Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -62,9 +61,10 @@ public class appAPIController {
      * @param jugador Nombre del jugador a modificar
      * @param rp Informacion a cambiar en el jugador
      * @return
+     * @throws AdventureMapPersistenceException
      */
     @RequestMapping(path = "/AdventureMap/jugadores/{jugador}",method = RequestMethod.PUT)
-    public ResponseEntity<?> putJugador(@PathVariable(name = "jugador") String jugador,@RequestBody Map<String,Object> rp) {
+    public ResponseEntity<?> putJugador(@PathVariable(name = "jugador") String jugador,@RequestBody Map<String,Object> rp) throws AdventureMapPersistenceException {
         try {
             Jugador j = (Jugador)services.getPersonaje(jugador);
             Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
@@ -76,12 +76,8 @@ public class appAPIController {
                 return new ResponseEntity<>(false, HttpStatus.CONTINUE);
             }
             else{
-                ae.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-        }catch(Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     /**
@@ -111,7 +107,6 @@ public class appAPIController {
             }
         }
         catch(Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -125,7 +120,6 @@ public class appAPIController {
             Jugador j = new Jugador(coordenadas, nombre, services.getTablero());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(Exception e){
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -141,7 +135,6 @@ public class appAPIController {
                 ArrayList jugadores = services.getPersonajesJson("Jugador");
                 return new ResponseEntity<>(jugadores, HttpStatus.ACCEPTED);
             }catch(Exception e){
-                e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             

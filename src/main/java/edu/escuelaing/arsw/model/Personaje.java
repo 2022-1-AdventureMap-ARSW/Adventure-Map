@@ -87,9 +87,6 @@ public abstract class Personaje extends Thread{
             }
             throw ea;
         }
-        catch(Exception e){
-            throw e;
-        }
 
     }
     //Atacar

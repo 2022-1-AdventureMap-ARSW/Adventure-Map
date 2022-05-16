@@ -11,6 +11,7 @@ import edu.escuelaing.arsw.model.Jugador;
 import edu.escuelaing.arsw.model.Monstruo;
 import edu.escuelaing.arsw.model.Personaje;
 import edu.escuelaing.arsw.model.Tuple;
+import edu.escuelaing.arsw.persistence.AdventureMapNotFoundException;
 import edu.escuelaing.arsw.persistence.AdventureMapPersistenceException;
 import edu.escuelaing.arsw.services.AdventureMapServices;
 
@@ -37,7 +38,7 @@ public class StompMessageHandler {
     ArrayList<Monstruo> monstruos = new ArrayList<>();  
 
     @MessageMapping("/map/mover/{origen}")
-    public void handleMoverJugador(@DestinationVariable String origen, Tuple destino) throws AdventureMapServicesPersistenceException{
+    public void handleMoverJugador(@DestinationVariable String origen, Tuple destino) throws AdventureMapServicesPersistenceException, AdventureMapNotFoundException, AdventureMapPersistenceException{
         Personaje p = ams.getPersonaje(origen);
         ArrayList<Map<String,Object>> participantes = new ArrayList();
         Personaje enemy = ams.getPersonaje(destino);
@@ -54,12 +55,6 @@ public class StompMessageHandler {
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
             }
-            else{
-                e.printStackTrace();
-            }
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
         }
     }
 
@@ -76,7 +71,6 @@ public class StompMessageHandler {
                 p.setAtaca(false);
                 quitarJugador();
             }
-            e.printStackTrace();
         }
         finally{
             participantes.add(p.getJSON());

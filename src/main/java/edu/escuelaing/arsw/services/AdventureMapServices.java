@@ -65,7 +65,6 @@ public class AdventureMapServices {
             }catch(AdventureMapPersistenceException e){
                 throw new AdventureMapServicesPersistenceException("No ha sido posible crear el monstruo en la posicion ("+x+","+y+")");
             }catch(AdventureMapNotFoundException ex){
-                ex.printStackTrace();
                 throw new AdventureMapServicesPersistenceException("No ha sido posible crear al monstruo en la posicion ("+x+","+y+")");
             }
         }
@@ -101,33 +100,6 @@ public class AdventureMapServices {
         }
     }
 
-    //Atacar(Monstruo)
-
-
-    //AccionEnTerritorioNoVacio(ConJugadores)
-    public void accionEnTerritorioNoVacio(Personaje p, Tuple enemigo) throws AdventureMapServicesPersistenceException{
-        Scanner sc = new Scanner(System.in);
-        int accion = sc.nextInt();
-        
-        switch (accion) {
-            case 1:
-                break;
-            case 2:
-                break;
-        }
-        try {
-            System.out.println(tablero.getPersonaje(enemigo));
-        } catch (AdventureMapNotFoundException | AdventureMapPersistenceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        atacar(p, enemigo);
-    }
-
-    //AccionEnTerritorioVacio(SinJugadores)
-    public void accionEnTerritorioVacio() throws AdventureMapServicesPersistenceException{
-
-    }
 
     //Comprobar Estado Jugador
 
@@ -219,15 +191,8 @@ public class AdventureMapServices {
         return jugador;
     }
     
-    public Personaje getPersonaje(Tuple personaje) throws AdventureMapServicesPersistenceException{
-        Personaje p = null;
-        try {
-            p = tablero.getPersonaje(personaje);
-        } catch (AdventureMapNotFoundException | AdventureMapPersistenceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return p;
+    public Personaje getPersonaje(Tuple personaje) throws AdventureMapNotFoundException,AdventureMapPersistenceException{
+        return tablero.getPersonaje(personaje);
     }
 
     public Personaje getPersonaje(String nombre) throws AdventureMapServicesPersistenceException{
@@ -244,15 +209,10 @@ public class AdventureMapServices {
         return p;
     }
 
-    public Tuple getPersonaje(Tuple personaje,  boolean tuple){ 
+    public Tuple getPersonaje(Tuple personaje,  boolean tuple) throws AdventureMapPersistenceException, AdventureMapNotFoundException{ 
         Tuple q = null;
-        try {
-            Personaje p = getPersonaje(personaje);
-            q = p.getCoordenadas();
-        } catch (AdventureMapServicesPersistenceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        Personaje p = getPersonaje(personaje);
+        q = p.getCoordenadas();
         return q;
     }
 
