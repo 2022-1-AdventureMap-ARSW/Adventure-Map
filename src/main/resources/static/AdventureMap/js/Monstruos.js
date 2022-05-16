@@ -30,31 +30,12 @@ function getMonstruos(){
       })
     }
     drawMonsterPart(monstruos);
-  //console.log("COUNT"+count)
 }
 
 function moverMonstruos(monstruos, callback){
   monstruos.forEach(element => {
     move_monster(element,function(monster){
       stompClient.stompClient.send("/App/map/mover/"+monster.nombre,{},JSON.stringify(monster.posicion));
-      
-    //   $.ajax({
-    //     url: url5+"AdventureMap/monstruos/"+monster.nombre,
-    //     type: "PUT",
-    //     data: JSON.stringify(monster),	
-    //     contentType: "application/json"
-    // }).then(
-    //     function(){
-    //         console.log("Monstruo modificado");
-    //         console.log(monster);
-    //         // drawjugadoresPart(player.posicion);
-    //         stompClient.send('/App/jugadores/map',{},JSON.stringify(monster));
-    //     },
-    //     function(err){
-    //         console.log("No se pudo modificar el monstruo");
-    //         move_monster(element);
-    //     }
-    // )
     });
   })
   callback();
@@ -62,7 +43,6 @@ function moverMonstruos(monstruos, callback){
 
 
 function mainM(){
-  //console.log("ENTRA A MAINM");
   drawMonster();
   
 }
@@ -76,7 +56,6 @@ function random_movement(){
 }
 
 function drawMonster(){
- // console.log("ENTRA AL PRIMER DRAWMONSTER");
   getMonstruos();
 }
 
@@ -89,9 +68,6 @@ function clear_boardm() {
 
 
 function drawMonsterPart(MonsterPart) {
- // console.log("ENTRA A DRAWMONSTERPART")
-    // maint();
-    // main();
     var monstruos_ = MonsterPart.map(function(monstruo){
       var monster =  monstruo.posicion;
       return monster;
@@ -174,17 +150,11 @@ function move_monster(monster) {
             console.log("Posicion inicial "+ JSON.stringify(monster.posicion));
             monster.posicion.x = monster.posicion.x + dx;
             monster.posicion.y = monster.posicion.y + dy
-              //new_monster = {x: monster.x + dx, y: monster.y + dy};
               console.log("Supuesta posicion "+JSON.stringify({x:monster.posicion.x + dx,y:monster.posicion.y + dy}));
               console.log("POSICION DE MONSTRUO "+JSON.stringify(monster.posicion));
-              //console.log("Mons movido: x"+mons.x+ ", y: "+mons.y);
-              //console.log("Monster movido: x"+monster.x+ ", y: "+monster.y);
               var h = "(" + mons.x + ","+  mons.y + ")";
-              //console.log("ESTE ES MONS: "+JSON.stringify(mons))
-              //console.log("ESTE ES MONSTER" + JSON.stringify(monster));
               console.log(monster);
               stompClient.send("/App/map/mover/"+monster.nombre,{},JSON.stringify(monster.posicion));
-             // console.log(monster);
           }
         }
       }

@@ -174,55 +174,7 @@
                         ataqueMonstruo();
                     }
                 }
-                // if(enemigo.ataca == false && local.ataca == false){
-                //     actualizarEstadisticasJugadorJugador(local,enemigo,function(){
-                //         informarPerdida(function(){
-                //             window.location = "/AdventureMap/Index.html";
-                //         });
-                //     })
-                // }
-                // if(enemigo.Tipo == "Monstruo"){
-                //     console.log("Entra a pelea con monstruo");
-                //     monstruo1 = enemigo.nombre;
-                //     if(enemigo.ataca == false && enemigo.vida > 0){
-                //         intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
-                //     }
-                //     actualizarEstadisticasJugadorMonstruo(local,enemigo);
-                // }else if(enemigo != "Monstruo" && enemigo.ataca == true && local.ataca == false && enemigo.vida > 0 && local.vida > 0){
-                //     console.log("Pela más de dos");
-                //     alert("El enemigo esta en una pelea");
-                //     huirJugador();
-                // }
-                // else{
-                //     actualizarEstadisticasJugadorJugador(local, enemigo, function(){
-                //         informarPerdida(function(){
-                //             window.location = "/AdventureMap/Index.html";
-                //         });
-                //     });
-                // }
-                // SI SOY ATACANTE
              });
-             
-            // SUSCRIPCION PELEA DOS
-            stompClient.subscribe("/App/atacando/masDos",function(eventbody){
-                var nombreAtacante = eventbody.body;
-                if(nombreAtacante == name){
-                    setTimeout(function(){
-                        alert("No se puede ingresar, porque el destino esta en combate");
-                    }, 2000);
-                }
-            });
-
-            //SUSCRIPCION MONSTRUO VS JUGADOR
-            stompClient.subscribe("/App/pelea/jugaVSmons", function(eventbody){
-                console.log("EVENTBODY PELEA ENTRE JUGADOR Y MONSTRUO "+eventbody.body);
-                var contrincantes = JSON.parse(eventbody.body);
-                monstruo1 = "(" + contrincantes[1].x + ","+  contrincantes[1].y + ")";
-                jugador1 = "(" + contrincantes[0].x + ","+  contrincantes[0].y + ")";
-                console.log(monstruo1)
-                console.log(jugador1)
-                setInterval('ataqueMonstruo()',2000);
-            })
             getElementsTablero();
       });      
     };
@@ -271,34 +223,9 @@
             }
         }
     }
-
-    function actualizarEstadisticasJugadorMonstruo(local, enemigo){
-        if(name == local.nombre){document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
-            $("#vidaP").text("vidaP: "+local.vida);
-            $("#ataqueP").text("ataqueP: "+" "+local.dano);
-            $("#vidaE").text("vidaE: "+" "+enemigo.vida);
-            $("#ataqueE").text("ataqueE: "+" "+enemigo.dano);
-            $(".movement").prop('disabled', true);
-            contrincante = enemigo;
-            if(local.vida == 0){
-                if(intervaloAtaqueMonstruo!= null){
-                    clearInterval(intervaloAtaqueMonstruo);
-                }
-                informarPerdida(function(){
-                    window.location = "/AdventureMap/Index.html";
-                });
-            }else if(enemigo.vida == 0){
-                alert("Ha ganado");
-                huirJugador();
-            }
-        }
-    }
     
     function informarPerdida(){
         window.location = "/AdventureMap/Index.html";
-        // setTimeout((function(){
-        //     window.location = "/AdventureMap/Index.html";
-        // }, 2000));
     }
 
     /**

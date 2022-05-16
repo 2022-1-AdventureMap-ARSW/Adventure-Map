@@ -49,7 +49,6 @@ function random_player(min, max)
 }
 
 function drawjugadoresPart(MonsterPart) {
-   // console.log("ENTRA A DRAWJUGADORES")
     clear_board;
     maint();
     mainM();
@@ -99,13 +98,6 @@ var movimiento = (function(){
           jugadoresViejos = {x:jugador.x,y:jugador.y};
           if (!(comprobar_bordesx(jugador.x + dx)  )){
                jugador = {x: jugador.x + dx, y: jugador.y + dy}
-            //    clear_board();
-            //    maint();
-              //mainM();
-            //    main();
-             //  if(comprobar_otro_monstruo(jugadores)){
-                 //   console.info("jugador encontro monstruo derecha")
-                // }
           }
     }
 
@@ -115,13 +107,6 @@ var movimiento = (function(){
           jugadoresViejos = {x:jugador.x,y:jugador.y};
           if (!(comprobar_bordesx(jugador.x + dx)  )){
               jugador = {x: jugador.x + dx, y: jugador.y + dy}
-            //   clear_board();
-            //   maint();
-            // // mainM();
-            //   main();
-              //if(comprobar_otro_monstruo(jugadores)){
-                             //     console.info("jugador encontro monstruo izquierda")
-                           //  }
           }
 
     }
@@ -132,13 +117,6 @@ var movimiento = (function(){
           jugadoresViejos = {x:jugador.x,y:jugador.y};
           if(!(comprobar_bordesy(jugador.y + dy))){
                jugador = {x: jugador.x + dx, y: jugador.y + dy}
-            //    clear_board();
-            //    maint();
-            //   // mainM();
-            //    main();
-              // if(comprobar_otro_monstruo(jugadores)){
-                                //   console.info("jugador encontro monstruo abajo")
-                             // }
           }
     }
 
@@ -148,13 +126,6 @@ var movimiento = (function(){
           jugadoresViejos = {x:jugador.x,y:jugador.y};
           if(!(comprobar_bordesy(jugador.y + dy))){
                   jugador = {x: jugador.x + dx, y: jugador.y + dy}
-                //   clear_board();
-                //   maint();
-                //  // mainM();
-                //   main();
-                 // if(comprobar_otro_monstruo(jugadores)){
-                                     // console.info("jugador encontro monstruo arriba")
-                                // }
           }
     }
 

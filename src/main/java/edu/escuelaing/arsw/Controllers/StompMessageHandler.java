@@ -36,52 +36,6 @@ public class StompMessageHandler {
     ArrayList<Jugador> jugadores = new ArrayList<>();
     ArrayList<Monstruo> monstruos = new ArrayList<>();  
 
-    
-    @MessageMapping("/map/{nombre}")
-    public void handleIngresarJugador(@DestinationVariable String nombre, Tuple coordenada){
-        System.out.println("INGRESO UN NUEVO JUGADOR  "+ nombre);
-        try {
-            Jugador j = new Jugador(coordenada, nombre, ams.getTablero());
-            System.out.println("Jugador adicionado" + j);
-        } catch (AdventureMapPersistenceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    // @MessageMapping("/map/mover/monstruos")
-    // public void handleMoverMonstruo(@DestinationVariable String monstruo){
-
-    // }
-
-    // @MessageMapping("/jugador/atacar.{j}")
-    // public void handleAtacarJugador(){
-    // }
-
-    @MessageMapping("/map/mover/monstruo/{origen}")
-    public void handleMoverMonstruo(@DestinationVariable String origen, Tuple destino){
-        Personaje p = null;
-        try {
-            p = ams.getPersonaje(new Tuple(origen));
-            if(p.getAtaca()){
-                System.out.println("NO SE PUEDE MOVER, ESTA EN COMBATE");
-            }
-            else{
-                if(ams.getPersonaje(destino) != null){
-                    System.out.println("YA HAY ALGUIEN AHI 1");
-                }
-                else{
-                    ams.moverPersonaje(p, destino);
-                    System.out.println("Monstruo: " + ams.getJugadores());
-                    msgt.convertAndSend("/App/jugador/map",ams.getJugadores());
-                    }
-                }
-            
-            }
-        catch(Exception ex){ex.printStackTrace();}
-
-    }
-
     @MessageMapping("/map/mover/{origen}")
     public void handleMoverJugador(@DestinationVariable String origen, Tuple destino) throws AdventureMapServicesPersistenceException{
         Personaje p = ams.getPersonaje(origen);
@@ -102,25 +56,6 @@ public class StompMessageHandler {
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
             }
-                //Tuple con las ubicaciones del personaje a mover y el personaje a atacar
-                //IDEA PARA ATAQUE DE MONSTRUOS
-                // if(ams.getPersonaje(destino).getClass() == Monstruo.class){
-                //     //En caso que sea un monstruo, cada 2 segundos se ataca al jugador
-                //     //Se empieza manejando esto en el front, donde JS tiene funcion para
-                //     //que cada cierto tiempo se ejecute la función.}
-                //     System.out.println("PELEA CONTRA EL MONSTRUO");
-                    
-                //     msgt.convertAndSend("/App/pelea/jugaVSmons",participantes);
-                // }
-            // else if(e.getMessage().equals(AdventureMapPersistenceException.MAS_DE_DOS)){
-            //     System.out.println("YA ESTA EN PELEA EL OTRO 21");
-            //     ams.moverPersonaje(p, new Tuple(origen));
-            //     msgt.convertAndSend("/App/jugador/map",ams.getJugadores());
-            //     msgt.convertAndSend("/App/atacando/masDos",((Jugador)ams.getPersonaje(new Tuple(origen))).getNombre());
-            // }
-            // else{
-            //     e.printStackTrace();
-            // }
             else{
                 e.printStackTrace();
             }
@@ -155,12 +90,6 @@ public class StompMessageHandler {
             // msgt.convertAndSend("/App/monstruo/map",ams.getMonstruos());
             msgt.convertAndSend("/App/pelea/",participantes);//Envia el evento para actualizar las estadisticas
         }
-    }
-
-    @MessageMapping("/App/atacando.{propio}")
-    public void handlePeleando(@DestinationVariable String propio, String jsonPropio){
-        System.out.println("ENTRA A ATACANDO, NUEVO TOPICO ");
-        msgt.convertAndSend("/App/peleando",jsonPropio);
     }
 
     /**
