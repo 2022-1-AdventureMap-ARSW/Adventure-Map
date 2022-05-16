@@ -7,7 +7,8 @@ const GameCanvasp_ctx = GameCanvasp.getContext("2d");
 
 let url3 = "https://adventuremap-app.azurewebsites.net/";
 // let url4 = "http://localhost:8080/";
-let url4 = 'https://adventuremap.herokuapp.com/';
+// let url4 = 'https://adventuremap.herokuapp.com/';
+let url4 = 'http://projectarsw.australiaeast.cloudapp.azure.com:8080/';
 
 
 let jugador = {"x": random_player(0, GameCanvasp.width - 10), "y": random_player(0, GameCanvasp.height - 10)}

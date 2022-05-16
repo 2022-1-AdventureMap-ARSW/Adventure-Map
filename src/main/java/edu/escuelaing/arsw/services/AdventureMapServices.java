@@ -50,6 +50,7 @@ public class AdventureMapServices {
     }
 
     public void iniciarMapa() throws AdventureMapServicesPersistenceException{
+        
         for(int i=0;i<5;i++){
             int x = (int)Math.round((Math.random() * (290-0) + 0) / 10) * 10;
             int y = (int)Math.round((Math.random() * (290-0) + 0) / 10) * 10;
