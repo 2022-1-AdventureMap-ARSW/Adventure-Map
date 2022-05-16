@@ -133,9 +133,6 @@ public class StompMessageHandler {
     @MessageMapping("/map/pelea.{propio}")
     public void handlePelear(@DestinationVariable String propio, String enemigo) throws AdventureMapServicesPersistenceException{
         Personaje p = ams.getPersonaje(propio);
-        if(enemigo.equals("HUIR")){
-            p.setAtaca(false);
-        }
         Personaje v = ams.getPersonaje(enemigo);
         ArrayList<Map<String,Object>> participantes = new ArrayList();
         try {

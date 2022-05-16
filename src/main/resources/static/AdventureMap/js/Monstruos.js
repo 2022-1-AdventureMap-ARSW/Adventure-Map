@@ -14,7 +14,7 @@ let monster = {};
 
 
 function getMonstruos(){
-  $.get(url5+"AdventureMap/monstruos",function(data){
+  $.get(url4+"AdventureMap/monstruos",function(data){
     monstruos = data;
     console.log("Lista de monstruos obtenida");
     console.log(monstruos);

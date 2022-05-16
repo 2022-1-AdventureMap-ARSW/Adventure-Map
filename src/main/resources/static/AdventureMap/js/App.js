@@ -99,7 +99,7 @@
         console.log("ESTE ES EL JUGADOR"+name);
         var player = {"nombre":this.name, "posicion":getJugador()};
         $.ajax({
-            url: url5+"AdventureMap/jugadores/",
+            url: url4+"AdventureMap/jugadores/",
             type: "POST",
             data: JSON.stringify(player),	
             contentType: "application/json"
@@ -328,7 +328,7 @@
     function huirMonstruo(){
         console.log("Se supone que el monstruo huye");
         $.ajax({
-            url: url5+"AdventureMap/monstruos/"+monstruo1.nombre,
+            url: url4+"AdventureMap/monstruos/"+monstruo1.nombre,
             type: "PUT",
             data: JSON.stringify(monstruo1),	
             contentType: "application/json"
@@ -364,7 +364,7 @@
         }
         console.log("Se supone que el monstruo huye");
         $.ajax({
-            url: url5+"AdventureMap/jugadores/"+jugador1.nombre,
+            url: url4+"AdventureMap/jugadores/"+jugador1.nombre,
             type: "PUT",
             data: JSON.stringify(jugador1),	
             contentType: "application/json"
