@@ -55,7 +55,6 @@ public abstract class Personaje extends Thread{
                 }
             }
         }catch (InterruptedException e) {
-            e.printStackTrace();
             Thread.currentThread().interrupt();
         }
     }
