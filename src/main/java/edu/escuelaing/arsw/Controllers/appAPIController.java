@@ -50,7 +50,6 @@ public class appAPIController {
             ArrayList<Map<String,Object>> monstruos = null;
             ResponseEntity<?> mensaje = null;
             monstruos = services.getPersonajesJson("Monstruo");
-            System.out.println(monstruos);
             mensaje = new ResponseEntity<>(monstruos, HttpStatus.ACCEPTED);
             return mensaje;
         }catch(Exception e){
@@ -104,7 +103,7 @@ public class appAPIController {
             }
             return new ResponseEntity<>(j.getJSON(),HttpStatus.ACCEPTED);
         }catch(AdventureMapServicesPersistenceException ae){
-            if(ae.getMessage() == AdventureMapPersistenceException.ATACAR_EXCEPTION){
+            if(ae.getMessage().equals(AdventureMapPersistenceException.ATACAR_EXCEPTION)){
                 return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
             }
             else{
@@ -120,14 +119,10 @@ public class appAPIController {
     @RequestMapping(path = "/AdventureMap/jugadores",method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<?> postJugador(@RequestBody Map<String,Object> rp) {
         try {
-            System.out.println(rp.toString());
             Map<String,Object> c = (Map<String,Object>)rp.get("posicion");
             Tuple coordenadas = new Tuple((int)c.get("x"),(int)c.get("y"));
-            System.out.println("Nombre del JSOn" + rp.get("nombre"));
             String nombre = (String) rp.get("nombre");
-            System.out.println("Nombre:" + nombre);
             Jugador j = new Jugador(coordenadas, nombre, services.getTablero());
-            System.out.println("Se crea el jugador "+j);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(Exception e){
             e.printStackTrace();
@@ -161,10 +156,8 @@ public class appAPIController {
     public ResponseEntity<Map<String,Object>> manejadorgetJugador(@PathVariable String nombre){
         ResponseEntity<?> mensaje = null;
         try{
-            System.out.printf("Se consulta el recurso %s: ",nombre);
             Personaje player = services.getJugador(nombre);
             Jugador jugador = (Jugador)player;
-            System.out.println("\n" + jugador.toString());
             return ResponseEntity.ok(jugador.getJSON());
         }catch(Exception e){
             return ResponseEntity.notFound().build();

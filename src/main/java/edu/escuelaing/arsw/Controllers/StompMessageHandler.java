@@ -43,7 +43,6 @@ public class StompMessageHandler {
         Personaje enemy = ams.getPersonaje(destino);
         try {
             ams.moverPersonaje(p, destino);
-            System.out.println("Jugadores: " + ams.getJugadores());
             msgt.convertAndSend("/App/jugadores/map",true);
         } catch (AdventureMapServicesPersistenceException e) {
             if(e.getMessage().equals(AdventureMapPersistenceException.ATACAR_EXCEPTION)){
@@ -51,7 +50,6 @@ public class StompMessageHandler {
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
             }else if(e.getMessage().equals(AdventureMapPersistenceException.MAS_DE_DOS)){
-                System.out.println("Se entra en conflicto entre dos");
                 participantes.add(p.getJSON());
                 participantes.add(enemy.getJSON());
                 msgt.convertAndSend("/App/pelea/",participantes);
@@ -71,12 +69,9 @@ public class StompMessageHandler {
         Personaje v = ams.getPersonaje(enemigo);
         ArrayList<Map<String,Object>> participantes = new ArrayList();
         try {
-            System.out.println("Se entra en conflictoo");
             ams.atacar(p, v);
         } catch (AdventureMapServicesPersistenceException e) {
-            System.out.println(e.getMessage());
             if(e.getMessage().equals(AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR)){
-                System.out.println("JUGADOR HA MUERTO");
                 v.setAtaca(false);
                 p.setAtaca(false);
                 quitarJugador();
@@ -98,7 +93,6 @@ public class StompMessageHandler {
     public void quitarJugador(){
         for(Personaje p : ams.getPersonajes()){
             if(!p.getVivo()){
-                System.out.println("Personaje" + p.getNombre() +"removido");
                 ams.quitarPersonaje(p);
             }
         }

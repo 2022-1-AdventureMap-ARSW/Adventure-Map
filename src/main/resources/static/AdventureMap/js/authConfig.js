@@ -6,16 +6,16 @@
 const msalConfig = {
     auth: {
         // 'Application (client) ID' of app registration in Azure portal - this value is a GUID
-        // clientId: "19fc8d28-0f37-4583-912e-ce595a01e0fb", //local
-        clientId: "10600804-1da5-432a-9dac-f62c392cc70b", //heroku
+        clientId: "19fc8d28-0f37-4583-912e-ce595a01e0fb", //local
+        // clientId: "10600804-1da5-432a-9dac-f62c392cc70b", //heroku
         //clientId: "", //azure
 
         // Full directory URL, in the form of https://login.microsoftonline.com/<tenant>
         authority: "https://login.microsoftonline.com/common",
 
         // Full redirect URL, in form of http://localhost:3000
-        // redirectUri: "http://localhost:8080/AdventureMap/Index.html",
-        redirectUri: "https://adventuremap.herokuapp.com/AdventureMap/Index.html",
+        redirectUri: "http://localhost:8080/AdventureMap/Index.html",
+        // redirectUri: "https://adventuremap.herokuapp.com/AdventureMap/Index.html",
         //redirectUri: "http://projectarsw.australiaeast.cloudapp.azure.com:8080/AdventureMap/Index.html",
 
     },

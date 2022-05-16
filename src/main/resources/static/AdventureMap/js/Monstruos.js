@@ -32,15 +32,6 @@ function getMonstruos(){
     drawMonsterPart(monstruos);
 }
 
-function moverMonstruos(monstruos, callback){
-  monstruos.forEach(element => {
-    move_monster(element,function(monster){
-      stompClient.stompClient.send("/App/map/mover/"+monster.nombre,{},JSON.stringify(monster.posicion));
-    });
-  })
-  callback();
-}
-
 
 function mainM(){
   drawMonster();

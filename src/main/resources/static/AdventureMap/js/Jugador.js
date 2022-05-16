@@ -49,7 +49,7 @@ function random_player(min, max)
 }
 
 function drawjugadoresPart(MonsterPart) {
-    clear_board;
+    clear_board();
     maint();
     mainM();
     GameCanvasp_ctx.fillStyle = player_col;
@@ -57,8 +57,7 @@ function drawjugadoresPart(MonsterPart) {
     console.log(MonsterPart);
     var players = MonsterPart.map(function(element){
         console.log(element);
-        var player = element.posicion;
-        return player;
+        return element.posicion;
     })
     console.log("Posiciones Jugador");
     console.log(players);
@@ -128,20 +127,6 @@ var movimiento = (function(){
                   jugador = {x: jugador.x + dx, y: jugador.y + dy}
           }
     }
-
-    function comprobar_otro_monstruo(jugador){
-
-           var monster0 = (jugador.x === Monstruo[0].x && jugador.y === Monstruo[0].y);
-           var monster1 = (jugador.x === Monstruo[1].x && jugador.y === Monstruo[1].y);
-           var monster2 = (jugador.x === Monstruo[2].x && jugador.y === Monstruo[2].y);
-           var monster3 = (jugador.x === Monstruo[3].x && jugador.y === Monstruo[3].y);
-           var monster4 = (jugador.x === Monstruo[4].x && jugador.y === Monstruo[4].y);
-
-
-
-           return monster0 || monster1 || monster2 || monster3 || monster4;
-
-    } 
 
     return{
         derecha:move_monsterderecha,

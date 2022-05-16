@@ -48,13 +48,11 @@ public class Tablero {
             if(getPersonaje(end) != null){
                 tablero.put(begin.toString(),personaje);
                 if(getPersonaje(end).getAtaca()){
-                    System.out.println("PELEA DE MAS DE DOS");
                     throw new AdventureMapPersistenceException(AdventureMapPersistenceException.MAS_DE_DOS);
                 }
                 else{
                     // getPersonaje(end).setAtaca(true);
                     // getPersonaje(begin).setAtaca(true);
-                    System.out.println("PELEA NORMAL");
                     throw new AdventureMapPersistenceException(AdventureMapPersistenceException.ATACAR_EXCEPTION);
 
                 }

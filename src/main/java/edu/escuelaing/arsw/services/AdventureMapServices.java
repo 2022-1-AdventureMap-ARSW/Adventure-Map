@@ -106,17 +106,13 @@ public class AdventureMapServices {
 
     //AccionEnTerritorioNoVacio(ConJugadores)
     public void accionEnTerritorioNoVacio(Personaje p, Tuple enemigo) throws AdventureMapServicesPersistenceException{
-        System.out.println(p+ " Esta a punto de atacar a " + enemigo);
-        System.out.println("Que desea hacer\n 1.Atacar\n2.Huir");
         Scanner sc = new Scanner(System.in);
         int accion = sc.nextInt();
         
         switch (accion) {
             case 1:
-                System.out.println("Atacar jugador");
                 break;
             case 2:
-                System.out.println("Huir");
                 break;
         }
         try {
@@ -147,7 +143,6 @@ public class AdventureMapServices {
         personajes =  tablero.getTablero().values();
         monstruos = new ArrayList<Tuple>();
         jugadores = new ArrayList<Tuple>();
-        //System.out.println(personajes);
         for(Personaje p:personajes){
             if(p instanceof Monstruo){
                 monstruos.add(p.getCoordenadas());
@@ -185,7 +180,6 @@ public class AdventureMapServices {
 
     public ArrayList<Tuple> getMonstruos(){
         reloadPersonajes();
-        System.out.println(this.monstruos);
         return this.monstruos;
     }
 

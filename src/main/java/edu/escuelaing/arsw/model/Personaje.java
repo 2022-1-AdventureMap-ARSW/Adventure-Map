@@ -47,16 +47,16 @@ public abstract class Personaje extends Thread{
 
     @Override
     public void run(){
-        while(vida >0){   
-            long actual = System.currentTimeMillis();
-            if(actual - time > 5000){
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Thread.currentThread().interrupt();
+        try{
+            while(vida >0){   
+                long actual = System.currentTimeMillis();
+                if(actual - time > 5000){
+                        sleep(1000);
                 }
             }
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
     
@@ -80,7 +80,6 @@ public abstract class Personaje extends Thread{
     public void atacar(Tuple enemigo) throws AdventureMapNotFoundException,AdventureMapPersistenceException{
         Personaje p = tablero.getPersonaje(enemigo);
         try{
-            System.out.println(this.coordenadas + " ataca a "+p);
             setAtaca(true);
             p.sufrirAtaque(dano);
         }catch(AdventureMapPersistenceException  ea){
@@ -103,9 +102,7 @@ public abstract class Personaje extends Thread{
     public void sufrirAtaque(int dano) throws AdventureMapPersistenceException{
         this.vida -= dano;
         setAtaca(true);
-        System.out.println("Vida Restante de "+this.coordenadas +": " +this.vida);
         if(this.vida<=0){
-            System.out.println("-----------------------EL jugador ha muerto");
             this.vivo = false;
             throw new AdventureMapPersistenceException(AdventureMapPersistenceException.EXCEPCTION_MUERTEJUGADOR);
         }
@@ -115,7 +112,6 @@ public abstract class Personaje extends Thread{
      * Accion que simula el movimiento de un personaje en el tablero de juego
      */
     public void mover(Tuple destino) throws AdventureMapPersistenceException{
-        System.out.println("SE MUEVE");
         tablero.moverPersonaje(coordenadas, destino);
     }
     //Moverse
