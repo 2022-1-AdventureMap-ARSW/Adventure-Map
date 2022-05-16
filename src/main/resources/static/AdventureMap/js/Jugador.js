@@ -7,8 +7,8 @@ const GameCanvasp_ctx = GameCanvasp.getContext("2d");
 
 let url3 = "https://adventuremap-app.azurewebsites.net/";
 // let url4 = "http://localhost:8080/";
-let url4 = 'https://adventuremap.herokuapp.com/';
-// let url4 = 'http://projectarsw.australiaeast.cloudapp.azure.com:8080/';
+// let url4 = 'https://adventuremap.herokuapp.com/';
+let url4 = 'http://projectarsw.australiaeast.cloudapp.azure.com:8080/';
 
 
 let jugador = {"x": random_player(0, GameCanvasp.width - 10), "y": random_player(0, GameCanvasp.height - 10)}
@@ -26,10 +26,7 @@ function getJugadorVie(){
 
 function getJugadores(){
     $.get(url4+"AdventureMap/jugadores",function(data){
-        console.log("Jugadores obtenidos");
-        console.log(data);
-        jugadores_ = data;
-        console.log(jugadores_);
+        jugadores_ = data;;
     }).then(function(){
         drawjugadoresPart(jugadores_);
     },function(err){
@@ -56,13 +53,9 @@ function drawjugadoresPart(MonsterPart) {
     mainM();
     GameCanvasp_ctx.fillStyle = player_col;
     GameCanvasp_ctx.strokestyle = player_border;
-    console.log(MonsterPart);
     var players = MonsterPart.map(function(element){
-        console.log(element);
         return element.posicion;
     })
-    console.log("Posiciones Jugador");
-    console.log(players);
     players.forEach(element => {
         GameCanvasp_ctx.fillRect(element.x, element.y, 10, 10);
         GameCanvasp_ctx.strokeRect(element.x, element.y, 10, 10);

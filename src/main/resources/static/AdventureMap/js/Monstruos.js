@@ -16,8 +16,6 @@ let monster = {};
 function getMonstruos(){
   $.get(url4+"AdventureMap/monstruos",function(data){
     monstruos = data;
-    console.log("Lista de monstruos obtenida");
-    console.log(monstruos);
   }).then(function(){
     console.log("Monstruos enviados");
   },function(err){
@@ -120,10 +118,8 @@ function comprobar_otro_monstruo(monstruo, i){
 }
 
 function move_monster(monster) {
-      console.log("MUEVE EL MONSTRUO")
       let dx = 0;
       let dy = 0;
-      console.log(monster);
       mons = monster;
       const xoy = Math.floor(Math.random() * 2)
       if (xoy == 0){
@@ -137,14 +133,9 @@ function move_monster(monster) {
           if(!(comprobar_bordesy(monster.posicion.y + dy))){
             // En caso que la posicion a la que quiere ir hay otro monstruo
             //Se queda en la misma posicion
-            console.log("Se mueve");
-            console.log("Posicion inicial "+ JSON.stringify(monster.posicion));
             monster.posicion.x = monster.posicion.x + dx;
             monster.posicion.y = monster.posicion.y + dy
-              console.log("Supuesta posicion "+JSON.stringify({x:monster.posicion.x + dx,y:monster.posicion.y + dy}));
-              console.log("POSICION DE MONSTRUO "+JSON.stringify(monster.posicion));
               var h = "(" + mons.x + ","+  mons.y + ")";
-              console.log(monster);
               stompClient.send("/App/map/mover/"+monster.nombre,{},JSON.stringify(monster.posicion));
           }
         }

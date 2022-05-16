@@ -25,8 +25,6 @@
      */
     function redirect(data){
         name = data;
-        console.log(name);
-        console.log("SI REDEPLOY2");
         window.location = "/AdventureMap/Mapa.html"
     }
 
@@ -36,7 +34,6 @@
      * @param {String} direccion 
      */
     function newDirection(direccion){
-        console.log("ENTRA A NEW DIRECTION "+direccion)
         direction = direccion
     }
 
@@ -95,8 +92,6 @@
      * aleatoria
      */
     function getPlayerInCanva(){
-        console.log(name)
-        console.log("ESTE ES EL JUGADOR"+name);
         var player = {"nombre":this.name, "posicion":getJugador()};
         $.ajax({
             url: url4+"AdventureMap/jugadores/",
@@ -105,8 +100,6 @@
             contentType: "application/json"
         }).then(
             function(){
-                console.log("JugadorIngresado");
-                console.log(JSON.stringify(player.posicion));
                 // drawjugadoresPart(player.posicion);
                 stompClient.send('/App/jugadores/map',{},JSON.stringify(player));
             },
@@ -117,9 +110,7 @@
     }
 
     function cancelarIntervalo(){
-        console.log("Cancelando Intervalo");
         if(intervaloAtaqueMonstruo!= null){
-            console.log("Intervalo cancelado");
             clearInterval(intervaloAtaqueMonstruo);
             clearInterval(intervaloAtaqueMonstruo);
         }
@@ -131,14 +122,11 @@
      * como canales de escucha a eventos o peticiones
      */
     function connectAndSuscribe(){
-        console.log(name);
         //SE EMPIEZA CREANDO EL STOMPCLIENT PARA MANDAR PETICIONES
-        console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
         //SUSCRIBIRSE AL CANAL DE JUEGO
         stompClient.connect({},function(frame){
-            console.log('Connected: ' + frame);
             stompClient.subscribe('/App/jugadores/map', function(eventbody){
                 console.log("EVENTBODY DE /JUGADOR/MAP 1");
                 console.log("Se supone que imprimer los elementos del mapa");
@@ -149,28 +137,17 @@
             // ESTE CANAL ACTUALIZA LAS ESTADISTICAS DE LOS JUGADORES
              subscribePelea = stompClient.subscribe("/App/pelea/", function(eventbody){
                 var personaje = JSON.parse(eventbody.body);
-                console.log("ESTE ES EL EVENTBODY1 " + eventbody);
                 local = personaje[0];
                 enemigo = personaje[1];
-                console.log("Enemigo");
-                console.log(enemigo);
-                console.log("Local ");
-                console.log(local);
-                console.log(enemigo.Tipo == "Monstruo");
-                console.log(enemigo.ataca == false);
-                console.log(enemigo.Tipo);
                 if(enemigo.ataca == true && local.ataca == false){
                     if(local.nombre == name){
                         alert("El destino esta en una pelea");
                     }
                 }else{
                     actualizarEstadisticasJugadorJugador(local,enemigo,informarPerdida);
-                    console.log(enemigo.Tipo == "Monstruo" && enemigo.ataca == false);
                     if(enemigo.Tipo == "Monstruo" && enemigo.ataca == false){
                         monstruo1 = enemigo;
                         jugador1 = local;
-                        console.log("El enemigo empieza a atacar");
-                        // intervaloAtaqueMonstruo = setInterval('ataqueMonstruo()',2000);
                         ataqueMonstruo();
                     }
                 }
@@ -182,7 +159,6 @@
     function actualizarEstadisticasJugadorJugador(local, enemigo,callback){
         //Si ataco
         if(name == local.nombre){
-            console.log("ATACO");
             document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaP").text("vidaP: "+local.vida);
             $("#ataqueP").text("ataqueP: "+" "+local.dano);
@@ -203,7 +179,6 @@
             }
         }//SI soy atacado
         else if(name == enemigo.nombre){
-            console.log("ME ATACAN");
             document.getElementById("imagenJugador").src ="img/ATACANDO.jpg";
             $("#vidaE").text("vidaE: "+" "+local.vida);
             $("#ataqueE").text("ataqueE: "+" "+local.dano);
@@ -232,7 +207,6 @@
      * Funcion generada para que se envie mensaje donde el jugador recibe el ataque
      */
     function ataqueMonstruo(){
-        console.log("ENTRA A ATAQUE MONSTRUO ")
         stompClient.send("/App/map/pelea."+monstruo1.nombre,{},jugador1.nombre);
     }
 
@@ -247,13 +221,10 @@
                 ataqueMonstruo();
             }
         }
-        console.log("YO SOY EL "+name)
-        console.log("EL ENEMIGO ES "+contrincante.nombre)
         stompClient.send("/App/map/pelea."+name,{},contrincante.nombre);
     }
 
     function huirMonstruo(){
-        console.log("Se supone que el monstruo huye");
         $.ajax({
             url: url4+"AdventureMap/monstruos/"+monstruo1.nombre,
             type: "PUT",
@@ -274,7 +245,6 @@
      * Lo primero que se hace es desuscribirse del topico de pelea que se genero al entrar en combate
      */
     function huirJugador(){
-        console.log("Se supone que el personaje huye");
         cancelarIntervalo();
         drawPlayer();
         if (monstruo1 != null){
@@ -289,7 +259,6 @@
             }
             }
         }
-        console.log("Se supone que el monstruo huye");
         $.ajax({
             url: url4+"AdventureMap/jugadores/"+jugador1.nombre,
             type: "PUT",
